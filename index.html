@@ -9,14 +9,27 @@
 
 /* ── TOKENS ── */
 :root {
+  /* Surfaces */
   --bg:#1c1530; --surface:#231c3a; --card:#272040; --chov:#2e2848;
   --border:#3a2e52; --bl:#4d4070;
+  /* Colour */
   --gold:#c9a84c; --gd:#7a6230; --gold-glow:rgba(201,168,76,.25);
   --text:#e4d9c8; --muted:#9b90a8; --dim:#5e566e;
   --acc:#7c5cbb; --acl:#9575d0;
   --red:#c45c5c; --teal:#4aaf9a; --grn:#5aab6e; --amb:#c9883a;
+  /* Shape */
   --r:12px; --rs:7px; --gap:14px;
+  /* Spacing scale */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  /* Shadow scale */
+  --sh-sm:0 1px 3px rgba(0,0,0,.25),0 1px 0 rgba(255,255,255,.03) inset;
+  --sh-md:0 2px 10px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.04) inset;
+  --sh-lg:0 4px 20px rgba(0,0,0,.5);
   --brightness:1;
+  /* Font stacks */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Crimson Pro', Georgia, serif;
+  --font-mono: 'Courier New', monospace;
 }
 body.light {
   --bg:#d8ccb0; --surface:#cfc3a3; --card:#c4b690; --chov:#b9a87e;
@@ -37,7 +50,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.55;
   transition: background .3s, color .3s;
 }
 body::before {
@@ -85,15 +98,20 @@ h1 { font-family: 'Cinzel', serif; font-size: 2.4rem; font-weight: 700; color: v
   font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
   background: transparent; color: var(--muted); border: none;
   border-radius: calc(var(--r) - 3px); cursor: pointer; transition: all .2s; text-align: center;
+  position: relative; overflow: hidden;
 }
 .nav-tab:hover { color: var(--text); background: rgba(255,255,255,.06); }
-.nav-tab.active { background: var(--acc); color: #fff; box-shadow: 0 2px 8px rgba(124,92,187,.3); }
+.nav-tab.active {
+  background: var(--acc); color: #fff;
+  box-shadow: 0 2px 12px rgba(124,92,187,.45);
+  font-weight: 600;
+}
 body.light .nav-tab.active { box-shadow: 0 2px 8px rgba(139,69,19,.25); }
 
 /* ── SECTION TITLES ── */
 .sec-title {
-  font-family: 'Cinzel', serif; font-size: 10px; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase; color: var(--gd); opacity: .85;
+  font-family: var(--font-display); font-size: 10px; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--gd);
   margin: 2rem 0 1rem; display: flex; align-items: center; gap: 12px;
 }
 .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
@@ -101,9 +119,7 @@ body.compact .sec-title { margin:1rem 0 .5rem; font-size:9px; }
 body.scale-lg .app .sec-title { font-size:11px; margin-bottom:14px; letter-spacing:.2em; }
 body.scale-xl .app { zoom:1.18; max-width:1440px; }
 body.scale-xl .app .grid { grid-template-columns:1fr 1fr 1fr; gap:20px; }
-body.scale-xl .app .card { padding:1.8rem 2rem 1.6rem; border-radius:16px; }
-body.scale-xl .app .scard { padding:1.8rem 2rem; border-radius:16px; }
-body.scale-xl .app .nav-tabs { padding:7px; gap:6px; border-radius:18px; margin-bottom:2.4rem; }
+body.scale-xl .app body.scale-xl .app body.scale-xl .app .nav-tabs { padding:7px; gap:6px; border-radius:18px; margin-bottom:2.4rem; }
 body.scale-xl .app .nav-tab { padding:12px 14px; font-size:11.5px; border-radius:12px; }
 body.scale-xl .app .sec-title { font-size:12px; margin-bottom:16px; letter-spacing:.22em; }
 
@@ -118,8 +134,8 @@ body.scale-xl .app .sec-title { font-size:12px; margin-bottom:16px; letter-spaci
   position: relative; overflow: hidden; margin-bottom: var(--gap);
 }
 .card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(to right, transparent, var(--gd), transparent); opacity: .55;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 10%, var(--gd) 50%, transparent 90%); opacity: .6;
 }
 .card:hover { border-color: var(--bl); box-shadow: 0 2px 16px rgba(0,0,0,.15); }
 .clabel {
@@ -127,7 +143,8 @@ body.scale-xl .app .sec-title { font-size:12px; margin-bottom:16px; letter-spaci
   letter-spacing: .18em; text-transform: uppercase; color: var(--gd);
   margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
 }
-.clabel::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* Line expander — suppressed when clabel is a flex row with inline style */
+.clabel:not([style])::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .rm { font-size: 17px; color: var(--text); min-height: 24px; line-height: 1.5; margin-bottom: 4px; }
 .rs { font-size: 13px; color: var(--muted); min-height: 18px; font-style: italic; margin-bottom: 5px; }
 .rage { font-style: normal; color: var(--gd); font-size: 13px; margin-bottom: 7px; }
@@ -238,7 +255,7 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 .saved-section-arrow.open { transform: rotate(180deg); }
 
 .sh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 8px; }
-.sh h2 { font-family: 'Cinzel', serif; font-size: 35px; color: var(--gold); opacity: .82; font-weight: 700; width:100%; text-align:center; letter-spacing:.08em; text-shadow:0 0 30px var(--gold-glow); }
+.sh h2 { font-family: var(--font-display); font-size: 26px; color: var(--gold); font-weight: 700; width:100%; text-align:center; letter-spacing:.08em; text-shadow:0 0 30px var(--gold-glow); }
 .shb { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .filter-row { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
@@ -252,8 +269,8 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 .ftag:hover, .ftag.active { background: var(--surface); border-color: var(--acl); color: var(--text); }
 
 .empty {
-  text-align: center; color: var(--dim); font-style: italic;
-  padding: 3rem 1rem; font-size: 15px;
+  text-align: center; color: var(--muted); font-style: italic;
+  padding: 3rem 1rem; font-size: 14px;
   border: 1px dashed var(--border); border-radius: var(--r);
 }
 
@@ -319,13 +336,22 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 .scard {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--r);
   padding: 1.2rem 1.4rem; margin-bottom: var(--gap);
+  position: relative; overflow: hidden;
+  box-shadow: var(--sh-sm);
+  transition: border-color .2s, box-shadow .2s;
 }
+.scard::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 10%, var(--bl) 50%, transparent 90%);
+  opacity: .5; pointer-events: none;
+}
+.scard:hover { border-color: var(--bl); box-shadow: var(--sh-md); }
 .scard::before {
   content: ''; display: block; height: 2px;
   background: linear-gradient(to right, transparent, var(--gd), transparent); opacity: .5;
   margin: -1.2rem -1.4rem 1.1rem;
 }
-.slabel { font-family: 'Cinzel', serif; font-size: 9px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gd); margin-bottom: 9px; display: block; }
+.slabel { font-family: var(--font-display); font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .timer { font-family: 'Cinzel', serif; font-size: 2.6rem; color: var(--gold); text-align: center; margin: 8px 0 14px; letter-spacing: .1em; }
 .tbtnrow { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .tbtn {
@@ -347,7 +373,7 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 .sin {
   flex: 1; min-width: 90px; background: var(--surface); border: 1px solid var(--bl);
   color: var(--text); border-radius: var(--rs); padding: 7px 11px;
-  font-family: 'Crimson Pro', serif; font-size: 14px; transition: border-color .15s;
+  font-family: var(--font-body); font-size: 14px; transition: border-color .15s;
 }
 .sin:focus { outline: none; border-color: var(--acl); }
 .sin::placeholder { color: var(--dim); }
@@ -466,7 +492,7 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 .sscard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--gd), transparent); opacity: .5; }
 .sshd { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); gap: 10px; }
 .ssts { display: flex; flex-direction: column; gap: 3px; }
-.sstitle { font-family: 'Cinzel', serif; font-size: 16px; color: var(--gold); font-weight: 600; letter-spacing: .02em; }
+.sstitle { font-family: 'Cinzel', serif; font-size: 14px; color: var(--text); font-weight: 700; letter-spacing: .04em; }
 .ssdts { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
 .ssacts { display: flex; gap: 5px; flex-wrap: wrap; flex-shrink: 0; }
 .sssec { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
@@ -516,13 +542,35 @@ body.light .roll-all:hover { background: linear-gradient(135deg, #a35020, #7a381
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width:600px) {
+
+/* ── 900px: comfortable tablet ── */
+@media (max-width:900px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+  .s0-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── 640px: narrow tablet / large phone ── */
+@media (max-width:640px) {
   .grid, .sgrid, .encres, .vfgrid { grid-template-columns:1fr; }
+  .s0-grid { grid-template-columns: 1fr; }
   .full { grid-column:1; }
   h1 { font-size:1.9rem; }
   .trow { grid-template-columns:85px 1fr auto; }
   .encres { grid-template-columns:1fr 1fr; }
   .app { padding:1.5rem 1rem 4rem; }
+  .nav-tabs { gap: 2px; }
+  .nav-tab { min-width: 52px; font-size: 9px; padding: 8px 6px; }
+  .spell-filter-row { gap: 4px; }
+  .spell-filter-row .ssel { min-width: 80px; }
+}
+
+/* ── 400px: phone ── */
+@media (max-width:400px) {
+  .pc-grid-4 { grid-template-columns: 1fr 1fr; }
+  .pc-passive-row { grid-template-columns: 1fr 1fr; }
+  .pc-grid-3 { grid-template-columns: 1fr 1fr; }
+  .nav-tab { font-size: 8px; padding: 7px 4px; letter-spacing: .03em; }
+  .scard, .card { padding: .9rem 1rem; }
 }
 
 /* ── ENCOUNTER TIER ── */
@@ -722,11 +770,13 @@ body.light .ftag.active { background:var(--acc); color:#fff; }
 /* ── TOAST ── */
 .toast {
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(8px);
-  background:var(--card); border:1px solid var(--gd); border-radius:var(--rs);
-  padding:8px 22px; font-family:'Cinzel',serif; font-size:11px; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--gold); pointer-events:none;
-  opacity:0; transition:opacity .25s, transform .25s; z-index:9999;
-  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  background:var(--card); border:1px solid var(--bl); border-radius:var(--rs);
+  color:var(--text); padding:10px 22px; font-family:var(--font-display);
+  font-size:11px; z-index:9999; opacity:0;
+  transition:opacity .3s, transform .3s;
+  pointer-events:none;
+  box-shadow: var(--sh-lg);
+  letter-spacing: .06em;
 }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
@@ -747,7 +797,6 @@ body.light .card:hover { box-shadow:0 4px 20px rgba(0,0,0,.08); }
 .month-set:hover { background:var(--chov); }
 
 /* ── SCARD: session card top border ── */
-.scard { position:relative; overflow:hidden; }
 .scard::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(to right,transparent,var(--bl),transparent); }
 
 /* ── EMPTY STATE ── */
@@ -986,9 +1035,7 @@ body.scale-sm .app { zoom:0.88; }
 /* ── LARGE SCALE ── */
 body.scale-lg .app { zoom:1.0; max-width:1280px; }
 body.scale-lg .app .grid { grid-template-columns:1fr 1fr 1fr; gap:18px; }
-body.scale-lg .app .card { padding:1.6rem 1.8rem 1.4rem; border-radius:14px; }
-body.scale-lg .app .scard { padding:1.6rem 1.8rem; border-radius:14px; }
-body.scale-lg .app .nav-tabs { padding:6px; gap:5px; border-radius:16px; margin-bottom:2.2rem; }
+body.scale-lg .app body.scale-lg .app body.scale-lg .app .nav-tabs { padding:6px; gap:5px; border-radius:16px; margin-bottom:2.2rem; }
 body.scale-lg .app .nav-tab { padding:11px 12px; font-size:11px; border-radius:11px; }
 
 
@@ -1007,16 +1054,13 @@ body.light
 
 /* Card depth */
 .card {
-  box-shadow: 0 1px 3px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.03) inset;
+  box-shadow: var(--sh-sm);
   transition: box-shadow .2s, border-color .2s;
 }
 
 
 
-.card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.04) inset; }
-.scard {
-  box-shadow: 0 1px 3px rgba(0,0,0,.2);
-}
+.card:hover { box-shadow: var(--sh-md); }
 
 /* Navbar */
 .nav-tabs {
@@ -1144,9 +1188,7 @@ body.light .card {
 body.light .card:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.7) inset;
 }
-body.light .scard {
-  box-shadow: 0 1px 4px rgba(0,0,0,.1);
-}
+body.light 
 body.light .sin {
   box-shadow: inset 0 1px 2px rgba(0,0,0,.12);
 }
@@ -1231,8 +1273,8 @@ body.light .coll-clabel:hover { background: rgba(0,0,0,.03); }
 .pc-card-body.hidden { display: none; }
 .pc-field { display: flex; flex-direction: column; gap: 3px; }
 .pc-field-label {
-  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--gd);
+  font-family: var(--font-body); font-size: 9px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--gd); font-weight: 600;
 }
 .pc-field-input {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--rs);
@@ -1431,8 +1473,7 @@ body.compact .cond-chip { padding:1px 6px; font-size:9px; }
 
 .clr-sm { font-size: 10px !important; padding: 3px 10px !important; }
 
-#tab-tools .card { margin-bottom: var(--gap); }
-
+#tab-tools 
 /* Generator: World grid cards — flex for consistent layout */
 .grid > .card:has([data-ck="ck-tavern"]),
 .grid > .card:has([data-ck="ck-encounter"]) {
@@ -1693,8 +1734,8 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 .spell-edit-row { display:flex; gap:8px; flex-wrap:wrap; }
 .spell-edit-field { display:flex; flex-direction:column; gap:3px; flex:1; min-width:120px; }
 .spell-edit-label {
-  font-family:'Cinzel',serif; font-size:8px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--gd);
+  font-family:var(--font-body); font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--gd); font-weight:600; display:block; margin-bottom:3px;
 }
 .spell-edit-input { width:100%; box-sizing:border-box; }
 .spell-edit-desc { min-height:80px; resize:vertical; }
@@ -1766,8 +1807,8 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 }
 .s0-field { display: flex; flex-direction: column; gap: 3px; }
 .s0-label {
-  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--muted);
+  font-family: var(--font-body); font-size: 10px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted); font-weight: 600;
 }
 .s0-ta { min-height: 60px; resize: vertical; }
 .s0-sel { width: 100%; }
@@ -1775,9 +1816,18 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 
 /* ── ROUND / DURATION ── */
 .cbt-active-turn {
-  background: rgba(124,92,187,.12) !important;
+  background: rgba(124,92,187,.38) !important;
   border-left: 3px solid var(--acc) !important;
+  box-shadow: inset 3px 0 12px rgba(124,92,187,.15);
 }
+.cbt-active-turn .cbt-name-input {
+  font-weight: 700 !important;
+  color: var(--gold) !important;
+}
+body.light .cbt-active-turn { background: rgba(90,58,154,.18) !important; }
+body.light .cbt-active-turn .cbt-name-input { color: var(--acc) !important; }
+/* Light mode active turn */
+body.light .cbt-active-turn { background: rgba(90,58,154,.15) !important; }
 .dur-row {
   display: flex; align-items: center; gap: 6px;
   padding: 4px 0; border-bottom: 1px solid var(--border);
@@ -1790,6 +1840,247 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 .dur-rounds {
   font-family: 'Cinzel', serif; font-size: 11px;
   flex-shrink: 0; min-width: 40px; text-align: right;
+}
+
+/* ── GENERATOR LOCK BUTTON ── */
+.gen-lock-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--dim);
+  padding: 1px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  transition: color .15s, border-color .15s, background .15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+}
+.gen-lock-btn:hover {
+  color: var(--acc);
+  border-color: var(--acc);
+  background: rgba(124,92,187,.08);
+}
+.gen-lock-btn.locked {
+  color: var(--gold);
+  border-color: var(--gd);
+  background: rgba(201,168,76,.10);
+}
+body.light .gen-lock-btn { color: var(--muted); }
+body.light .gen-lock-btn:hover { color: var(--acc); border-color: var(--acc); }
+body.light .gen-lock-btn.locked { color: var(--gd); border-color: var(--gd); background: rgba(90,58,154,.08); }
+
+/* ── BESTIARY ── */
+.cr-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--rs); padding: 10px 12px; margin-bottom: 6px;
+  transition: border-color .15s;
+}
+.cr-card:hover { border-color: var(--bl); }
+.cr-card-custom { border-color: rgba(180,140,40,.4); }
+.cr-card-edited { border-color: rgba(100,160,100,.35); }
+.cr-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 8px; margin-bottom: 6px;
+}
+.cr-name-row { display: flex; flex-direction: column; gap: 2px; }
+.cr-name {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600;
+  color: var(--gd);
+}
+.cr-meta { font-family: 'Cinzel', serif; font-size: 10px; color: var(--muted); letter-spacing: .06em; }
+.cr-badge-custom { font-size: 9px; color: var(--gd); margin-left: 4px; vertical-align: middle; }
+.cr-badge-edited { font-size: 9px; color: var(--amb); margin-left: 4px; vertical-align: middle; }
+.cr-vitals {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  font-size: 12px; color: var(--dim);
+  border-top: 1px solid var(--border); padding-top: 5px; margin-bottom: 5px;
+}
+.cr-vitals b { color: var(--text); font-weight: 600; }
+.cr-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.cr-tag {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 6px; border-radius: 4px;
+  white-space: nowrap;
+}
+.cr-imm  { background: rgba(200,80,80,.15);  color: var(--red); border: 1px solid rgba(200,80,80,.3); }
+.cr-res  { background: rgba(80,120,200,.12);  color: #7ab; border: 1px solid rgba(80,120,200,.3); }
+.cr-cimm { background: rgba(140,100,200,.12); color: var(--acc); border: 1px solid rgba(140,100,200,.3); }
+.cr-leg  { background: rgba(180,140,40,.15);  color: var(--gd); border: 1px solid rgba(180,140,40,.3); }
+.cr-section { font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 3px; }
+.cr-sec-label {
+  font-family: 'Cinzel', serif; font-size: 9px; color: var(--acc);
+  text-transform: uppercase; letter-spacing: .1em; margin-right: 4px;
+}
+.cr-send-btn { border-color: var(--grn) !important; color: var(--grn) !important; }
+.cr-send-btn:hover { background: rgba(80,180,80,.1) !important; }
+
+/* ── GENERATOR RESULT EDIT HINT ── */
+#tab-generator .rm:not([data-locked='1']),
+#tab-generator .rs:not([data-locked='1']) {
+  cursor: text;
+}
+#tab-generator .rm[contenteditable='true'],
+#tab-generator .rs[contenteditable='true'] {
+  outline: 1px solid var(--acl) !important;
+  border-radius: 3px;
+  min-height: 1em;
+}
+
+/* ── GENERATOR SUB-NAVIGATION ── */
+.gen-subnav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.25rem;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.gen-subnav-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 10px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  border-radius: calc(var(--r) - 3px);
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  position: relative;
+}
+.gen-subnav-btn:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.gen-subnav-btn.active {
+  background: var(--acc);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(124,92,187,.45);
+  font-weight: 600;
+}
+body.light .gen-subnav-btn.active { box-shadow: 0 2px 8px rgba(139,69,19,.25); }
+
+/* ── GENERATOR CATEGORIES ── */
+.gen-cat { margin-bottom: 0; }
+.gen-cat .roll-all { margin-bottom: 1rem; }
+
+/* ── COMPACT MODE: Global spacing ── */
+body.compact { --gap: 10px; }
+body.compact .app { padding: 1.2rem 1rem 3.5rem; }
+
+/* ── COMPACT MODE: All scards ── */
+body.compact .scard { padding: .9rem 1rem; }
+
+/* ── COMPACT MODE: Section titles ── */
+/* (already defined above: margin:1rem 0 .5rem) */
+
+/* ── COMPACT MODE: Generator sub-nav ── */
+body.compact .gen-subnav { padding: 3px; gap: 3px; margin-bottom: .75rem; }
+body.compact .gen-subnav-btn { padding: 6px 8px; font-size: 9px; }
+
+/* ── COMPACT MODE: Roll All buttons ── */
+body.compact .roll-all { padding: 9px 14px; font-size: 12px; margin-bottom: 6px; }
+body.compact .gen-cat .roll-all { margin-bottom: .75rem; }
+
+/* ── COMPACT MODE: Collapsible toolbar ── */
+body.compact .coll-toolbar { padding: 2px 0 6px; gap: 4px; margin-bottom: 6px; }
+
+/* ── COMPACT MODE: Session / Combat / Settings spacing ── */
+body.compact .slabel { font-size: 8px; margin-bottom: 4px !important; }
+body.compact .sinrow { gap: 4px; margin-bottom: 6px; }
+body.compact .rlist { max-height: 150px; }
+
+/* ── COMPACT MODE: CR card (Bestiary) ── */
+body.compact .cr-card { padding: 7px 10px; margin-bottom: 4px; }
+
+/* ── COMPACT MODE: Settings rows ── */
+body.compact .settings-row { padding: 8px 0; }
+
+/* ── COMPACT MODE: Spell reference ── */
+body.compact .spell-filter-row { gap: 4px; }
+body.compact .spell-card { padding: 7px 10px; margin-bottom: 4px; }
+
+/* ── COMPACT MODE: Nav ── */
+body.compact .nav-tabs { padding: 3px; gap: 3px; margin-bottom: 1.25rem; }
+body.compact .nav-tab { padding: 7px 8px; font-size: 9px; }
+
+/* ── GENERATOR SECTION TITLES ── */
+.gen-sec-title {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gd);
+  margin: 1.25rem 0 .6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gen-sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.gen-cat > .gen-sec-title:first-of-type { margin-top: 0; }
+body.compact .gen-sec-title { margin: .75rem 0 .4rem; font-size: 8px; }
+
+/* ── PC HP BAR ── */
+.pc-hp-bar-wrap {
+  height: 4px;
+  background: var(--surface);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2px 0 4px;
+}
+.pc-hp-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .4s ease, background .4s ease;
+  min-width: 0;
+}
+body.compact .pc-hp-bar-wrap { height: 3px; margin: 1px 0 3px; }
+
+/* ── COMBAT TRACKER HP BAR ── */
+.cbt-hp-bar-wrap {
+  height: 3px;
+  background: var(--surface);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2px 0 0;
+  flex-basis: 100%;
+  flex-shrink: 0;
+}
+.cbt-hp-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .3s ease, background .3s ease;
+  min-width: 0;
+}
+
+/* ── SECTION TITLE: first in tab gets less top margin ── */
+[id^="tab-"] > .sec-title:first-of-type,
+.gen-cat > .gen-sec-title:first-of-type,
+[id^="tab-"] > div > .sec-title:first-child {
+  margin-top: 0.5rem;
+}
+
+/* ── EMPTY STATE ICONS ── */
+.empty::before {
+  content: attr(data-icon);
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.35;
+  line-height: 1;
 }
 </style>
   
@@ -1810,12 +2101,10 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 <div class="nav-tabs">
   <button class="nav-tab active" data-tab="party">Party</button>
   <button class="nav-tab" data-tab="session">Session</button>
+  <button class="nav-tab" data-tab="combat">Combat</button>
   <button class="nav-tab" data-tab="generator">Generator</button>
-  <button class="nav-tab" data-tab="saved">Saved</button>
-  <button class="nav-tab" data-tab="tools">Tools</button>
   <button class="nav-tab" data-tab="settings">Settings</button>
 </div>
-<button onclick="showShortcuts()" style="position:fixed;bottom:24px;right:24px;z-index:900;background:var(--card);border:1px solid var(--bl);border-radius:50%;width:36px;height:36px;font-family:'Cinzel',serif;font-size:14px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Keyboard Shortcuts (/)">?</button>
 
 <!-- ═══ PARTY TAB ═══ -->
 <div id="tab-party" style="display:none;">
@@ -1829,57 +2118,85 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     </div>
   </div>
 
-  <div class="sec-title">Characters</div>
+<div class="sec-title">Characters</div>
   <div class="scard">
     <div class="clabel">Player Characters</div>
     <div id="pc-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px;"></div>
     <button class="addbtn" onclick="addPC()" style="width:100%;justify-content:center;">+ Add Character</button>
+    <div style="display:flex;gap:6px;margin-top:6px;">
+      <button class="tbtn" onclick="exportPCs()" style="flex:1;font-size:10px;padding:4px 8px;">⬇ Export Party</button>
+      <button class="tbtn" onclick="importPCs()" style="flex:1;font-size:10px;padding:4px 8px;">⬆ Import Party</button>
+    </div>
     <div style="display:flex;justify-content:flex-end;margin-top:6px;">
       <button class="clr-btn" onclick="clrPCs(this)" style="font-size:10px;padding:3px 10px;">Clear All</button>
     </div>
-  </div>
-
-
-
-  <div class="sec-title">Spell Reference</div>
-  <div class="scard">
-    <div class="clabel" style="display:flex;align-items:center;gap:8px;">
-      <span>Spell Lookup</span>
-      <button class="tbtn" onclick="showAddSpellForm()" style="font-size:10px;padding:3px 10px;margin-left:auto;" title="Add homebrew or custom spell">✦ Add Spell</button>
+  
+<div style="height:1px;background:var(--border);margin:12px 0;"></div>
+<div class="slabel" style="margin-bottom:6px;">Spotlight Tracker</div>
+          <div class="sinrow" style="margin-bottom:6px;">
+      <input class="sin" id="sp-player" placeholder="Player name" onkeydown="if(event.key==='Enter')addSpotlight()">
+      <button class="addbtn" onclick="addSpotlight()">Add</button>
+      <button class="tbtn" onclick="syncSpotlightFromPCs()" title="Sync from Characters above" style="font-size:10px;padding:4px 10px;">Sync PCs</button>
     </div>
-    <div class="spell-filter-row">
-      <input class="sin" id="spell-search" placeholder="Search spells…"
-        oninput="spellSearch(this.value)" style="flex:1;min-width:120px;">
-      <select class="ssel" onchange="spellFilterClass(this.value)" style="min-width:110px;">
-        <option value="">All Classes</option>
-        <option value="artificer">Artificer</option><option value="bard">Bard</option><option value="cleric">Cleric</option>
-        <option value="druid">Druid</option><option value="paladin">Paladin</option><option value="ranger">Ranger</option>
-        <option value="sorcerer">Sorcerer</option><option value="warlock">Warlock</option><option value="wizard">Wizard</option>
-      </select>
-      <select class="ssel" onchange="spellFilterLevel(this.value)" style="min-width:90px;">
-        <option value="">All Levels</option>
-        <option value="0">Cantrip</option>
-        <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
-        <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
-        <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
-      </select>
-      <select class="ssel" onchange="spellFilterSchool(this.value)" style="min-width:110px;">
-        <option value="">All Schools</option>
-        <option>Abjuration</option><option>Conjuration</option><option>Divination</option>
-        <option>Enchantment</option><option>Evocation</option><option>Illusion</option>
-        <option>Necromancy</option><option>Transmutation</option>
-      </select>
+    <div id="spotlight-list" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;"></div>
+    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:16px;">
+      <button class="tbtn" onclick="resetSpotlight()">Reset Counts</button>
+      <button class="clr-btn" onclick="clearSpotlight()">Clear All</button>
     </div>
-    <div id="spell-lookup-results" class="spell-results"></div>
+</div>
+
+<div class="sec-title">Saved Characters &amp; Templates</div>
+<div class="scard">
+  <div class="clabel">Saved Characters</div>
+  <div id="sec-tmpls"><div id="tmpl-con"></div></div>
+  <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+  <div class="slabel" style="margin-bottom:6px;color:var(--gd);">Party Saves</div>
+  <div id="sec-party-saves"><div id="party-saves-con"></div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+    <button class="tbtn" onclick="exportTmpls('word')" style="font-size:10px;padding:3px 8px;">Characters Word</button>
+    <button class="tbtn" onclick="exportTmpls('excel')" style="font-size:10px;padding:3px 8px;">Characters Excel</button>
+    <button class="tbtn" onclick="exportAllPartySaves('word')" style="font-size:10px;padding:3px 8px;">Party Word</button>
+    <button class="tbtn" onclick="exportAllPartySaves('excel')" style="font-size:10px;padding:3px 8px;">Party Excel</button>
+    <button class="clr-btn" onclick="clrTmpl()" style="font-size:10px;padding:3px 8px;">Clear Templates</button>
+    <button class="clr-btn" onclick="clrPartySaves()" style="font-size:10px;padding:3px 8px;">Clear Saves</button>
   </div>
 </div>
+
+
+</div>
+
 
 <!-- ═══ SESSION TAB ═══ -->
 <div id="tab-session" style="display:none;">
   <div class="sh"><h2 id="sess-title" contenteditable="true" oninput="persist()" spellcheck="false" style="outline:none;cursor:text;" placeholder="Session title...">Session Title</h2></div>
 
+<div class="sec-title">Session History</div>
+<div class="scard">
+  <div class="clabel" style="display:flex;align-items:center;gap:8px;">
+    <span>Saved Sessions</span>
+    <div style="display:flex;gap:6px;margin-left:auto;">
+      <button class="tbtn" onclick="exportAllSessions('word')" style="font-size:10px;padding:3px 8px;">Word</button>
+      <button class="tbtn" onclick="exportAllSessions('excel')" style="font-size:10px;padding:3px 8px;">Excel</button>
+      <button class="tbtn" onclick="exportAllSessions('html')" style="font-size:10px;padding:3px 8px;">HTML</button>
+      <button class="clr-btn" onclick="clrSessions()" style="font-size:10px;padding:3px 8px;">Clear All</button>
+    </div>
+  </div>
+  <div id="sec-sessions"><div id="ss-con"></div></div>
+</div>
 
-<div class="sec-title">Session 0</div>
+
+<div class="sec-title">Campaigns &amp; Setup</div>
+  <div class="scard">
+    <div class="clabel">Campaign Manager</div>
+    <div class="rs" style="margin-bottom:10px;">Each campaign stores its own characters, sessions, notes, and all data independently.</div>
+    <div id="campaign-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;"></div>
+    <div style="display:flex;gap:6px;margin-top:4px;">
+      <input class="sin" id="new-campaign-input" placeholder="Campaign name…" style="flex:1;" onkeydown="if(event.key==='Enter')newCampaign()">
+      <button class="tbtn" onclick="newCampaign()" style="font-size:12px;padding:6px 14px;">+ Add</button>
+    </div>
+  
+<div style="height:1px;background:var(--border);margin:12px 0;"></div>
+<div class="slabel" style="margin-bottom:6px;">Campaign Setup (Session 0)</div>
 <div class="scard">
   <div class="clabel">Session 0 Template</div>
   <div class="s0-grid">
@@ -1979,20 +2296,11 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     <button class="tbtn" onclick="exportSession0()" style="font-size:11px;padding:7px 14px;">Export .txt</button>
   </div>
 </div>
-
-<div class="sec-title">Campaigns</div>
-  <div class="scard">
-    <div class="clabel">Campaign Manager</div>
-    <div class="rs" style="margin-bottom:10px;">Each campaign stores its own characters, sessions, notes, and all data independently.</div>
-    <div id="campaign-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;"></div>
-    <div style="display:flex;gap:6px;margin-top:4px;">
-      <input class="sin" id="new-campaign-input" placeholder="Campaign name…" style="flex:1;" onkeydown="if(event.key==='Enter')newCampaign()">
-      <button class="tbtn" onclick="newCampaign()" style="font-size:12px;padding:6px 14px;">+ Add</button>
-    </div>
-  </div>
+</div>
 
 
-  <div class="sec-title">Session Controls</div>
+  
+<div class="sec-title">Session Controls</div>
   
     <div class="scard">
       <div class="clabel">Timer</div>
@@ -2048,7 +2356,8 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div class="tdesc" id="tdesc">The party has room to breathe.</div>
     </div>
 
-  <div class="sec-title">Notes &amp; Recap</div>
+  
+<div class="sec-title">Notes &amp; Recap</div>
 <div class="scard">
                               <div class="clabel">Session Notes</div>
     <textarea class="narea" id="notes" placeholder="Jot anything mid-session..." oninput="persist()"></textarea>
@@ -2068,8 +2377,26 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     </div>
   </div>
 
-  <div class="sec-title">Rumour Board</div>
-  <div class="scard">
+  
+
+
+<div class="sec-title">People &amp; Rumours</div>
+<div class="scard">
+      <div class="clabel">NPC Roster</div>
+    <!-- NPC Roster -->
+    <div class="sinrow">
+      <input class="sin" id="r-rname" placeholder="Name" onkeydown="if(event.key==='Enter')$('r-rsp').focus()">
+      <input class="sin" id="r-rsp" placeholder="Species" style="max-width:100px;" onkeydown="if(event.key==='Enter')$('r-rpron').focus()">
+      <input class="sin" id="r-rpron" placeholder="e.g. SOH-rin-yah" style="max-width:120px;font-style:italic;" title="Phonetic pronunciation" onkeydown="if(event.key==='Enter')$('r-rnote').focus()">
+      <input class="sin" id="r-rnote" placeholder="Note" onkeydown="if(event.key==='Enter')addNPC()">
+      <button class="addbtn" onclick="addNPC()">Add</button>
+    </div>
+    <ul class="rlist" id="rlist"><li style="color:var(--dim);font-size:13px;font-style:italic;padding:8px 12px;list-style:none;text-align:left;">No NPCs yet.</li></ul>
+    <div style="display:flex;justify-content:flex-end;margin-top:6px;">
+      <button class="clr-btn" onclick="clrRoster(this)" style="font-size:10px;padding:3px 10px;">Clear All</button>
+    </div>
+  </div>
+<div class="scard">
     <div class="clabel">Rumours &amp; Leads</div>
     <div class="sinrow" style="margin-bottom:6px;">
       <select class="ssel" id="rumour-cat" style="width:100px;flex-shrink:0;">
@@ -2096,118 +2423,15 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     <div id="rumour-list"></div>
   </div>
 
-  <div class="sec-title">World &amp; Characters</div>
-<div class="scard">
-      <div class="clabel">Calendar &amp; Timeline</div>
-    <label class="slabel">In-World Date</label>
-    <div class="sinrow">
-      <input class="sin sin-sm sin-nospinner" id="cal-day" value="1" placeholder="Day" style="width:65px;flex:none;" oninput="renderCalDisplay();persist()" onkeydown="if(event.key==='Enter')$('cal-year')?.focus()">
-      <select class="ssel" id="cal-month" style="flex:2;min-width:130px;" onchange="renderCalDisplay();persist()"></select>
-      <input class="sin sin-sm sin-nospinner" id="cal-year" value="1" placeholder="Year" style="width:70px;flex:none;" oninput="renderCalDisplay();persist()" onkeydown="if(event.key==='Enter')this.blur()">
-      <button class="tbtn" onclick="advDay(-1)" style="flex:none;">−Day</button>
-      <button class="tbtn" onclick="advDay(1)" style="flex:none;">+Day</button>
-      <button class="tbtn" onclick="advDay(-7)" style="flex:none;">−Week</button>
-      <button class="tbtn" onclick="advDay(7)" style="flex:none;">+Week</button>
-    </div>
-    <div id="cal-display" style="font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin:8px 0 10px;letter-spacing:.06em;"></div>
-    <label class="slabel">Custom Month Tables</label>
-    <div id="mset-list" style="margin-bottom:8px;display:flex;flex-direction:column;gap:4px;"></div>
-    <div class="sinrow" style="margin-bottom:6px;">
-      <input class="sin" id="mset-name" placeholder="Table name (e.g. Greyhawk)" style="flex:1;" onkeydown="if(event.key==='Enter')$('mset-months')?.focus()">
-    </div>
-    <textarea class="sin" id="mset-months" placeholder="One month per line..." style="width:100%;min-height:80px;font-family:'Crimson Pro',serif;font-size:14px;padding:7px 11px;border-radius:var(--rs);border:1px solid var(--bl);resize:vertical;margin-bottom:6px;background:var(--surface);color:var(--text);" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-    <button class="addbtn" onclick="saveMset()" style="width:100%;">Save Month Table</button>
-    <label class="slabel" style="margin-top:12px;">Add Event</label>
-    <div class="sinrow">
-      <input class="sin" id="ev-text" placeholder="Event description" onkeydown="if(event.key==='Enter')addEv()">
-      <select class="ssel" id="ev-rel" style="max-width:120px;flex:none;"><option value="now">Current</option><option value="past">Past</option><option value="future">Upcoming</option></select>
-      <button class="addbtn" onclick="addEv()">Add</button>
-    </div>
-    <ul class="evlist" id="evlist"><li style="color:var(--dim);font-size:13px;font-style:italic;padding:5px 0;">No events yet.</li></ul>
-    <div style="height:1px;background:var(--border);margin:14px 0;"></div>
-    <label class="slabel">Weather &amp; Atmosphere</label>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
-      <div>
-        <div class="slabel" style="margin-bottom:3px;">Season</div>
-        <select class="ssel" id="wx-season" style="width:100%;min-width:0;">
-          <option value="random">🎲 Random</option>
-          <option value="spring">Spring</option><option value="summer">Summer</option>
-          <option value="autumn">Autumn</option><option value="winter">Winter</option>
-        </select>
-      </div>
-      <div>
-        <div class="slabel" style="margin-bottom:3px;">Climate</div>
-        <select class="ssel" id="wx-climate" style="width:100%;min-width:0;">
-          <option value="random">🎲 Random</option>
-          <option value="temperate">Temperate</option><option value="arctic">Arctic / Tundra</option>
-          <option value="desert">Desert / Arid</option><option value="tropical">Tropical</option>
-          <option value="coastal">Coastal</option><option value="mountain">Mountain</option>
-        </select>
-      </div>
-      <div>
-        <div class="slabel" style="margin-bottom:3px;">Severity</div>
-        <select class="ssel" id="wx-severity" style="width:100%;min-width:0;">
-          <option value="random">🎲 Random</option>
-          <option value="calm">Calm</option><option value="mild">Mild</option>
-          <option value="notable">Notable</option><option value="severe">Severe</option>
-          <option value="extreme">Extreme</option>
-        </select>
-      </div>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="r-wx-tags"></div>
-    <div class="rm" id="r-wx" style="margin-bottom:4px;">—</div>
-    <div class="rs" id="r-wx-temp" style="color:var(--amb);font-style:normal;font-size:13px;margin-bottom:3px;">—</div>
-    <div class="rs" id="r-wx-wind" style="font-size:13px;margin-bottom:3px;">—</div>
-    <div class="rs" id="r-mood">—</div>
-    <div class="rs" id="r-wx-travel" style="color:var(--teal);font-style:normal;font-size:13px;">—</div>
-    <div class="cact" style="margin-top:8px;">
-      <button class="rbtn" onclick="rollWx()">Roll Weather</button>
-      <button class="svbtn" onclick="si('Weather',t('r-wx')+' — '+t('r-wx-temp')+' | '+t('r-wx-wind'))">+ Save</button>
-    </div>
-  </div>
 
 
+</div>
 
+<!-- ═══ COMBAT TAB ═══ -->
+<div id="tab-combat" style="display:none;">
+  <div class="sh"><h2>Combat</h2></div>
 
-
-  <div class="sec-title">Trackers</div>
-
-
-<div class="scard">
-      <div class="clabel">Spotlight Tracker</div>
-    <!-- Spotlight Tracker -->
-    <div class="slabel" style="margin-bottom:6px;">Spotlight Tracker</div>
-    <div class="sinrow" style="margin-bottom:6px;">
-      <input class="sin" id="sp-player" placeholder="Player name" onkeydown="if(event.key==='Enter')addSpotlight()">
-      <button class="addbtn" onclick="addSpotlight()">Add</button>
-      <button class="tbtn" onclick="syncSpotlightFromPCs()" title="Auto-fill from Party tab" style="font-size:10px;padding:4px 10px;">Sync PCs</button>
-    </div>
-    <div id="spotlight-list" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;"></div>
-    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:16px;">
-      <button class="tbtn" onclick="resetSpotlight()">Reset Counts</button>
-      <button class="clr-btn" onclick="clearSpotlight()">Clear All</button>
-    </div>
-    
-  </div>
-
-<div class="scard">
-      <div class="clabel">NPC Roster</div>
-
-    <!-- NPC Roster -->
-    <div class="slabel" style="margin-bottom:6px;">NPC Roster</div>
-    <div class="sinrow">
-      <input class="sin" id="r-rname" placeholder="Name" onkeydown="if(event.key==='Enter')$('r-rsp').focus()">
-      <input class="sin" id="r-rsp" placeholder="Species" style="max-width:100px;" onkeydown="if(event.key==='Enter')$('r-rpron').focus()">
-      <input class="sin" id="r-rpron" placeholder="e.g. SOH-rin-yah" style="max-width:120px;font-style:italic;" title="Phonetic pronunciation" onkeydown="if(event.key==='Enter')$('r-rnote').focus()">
-      <input class="sin" id="r-rnote" placeholder="Note" onkeydown="if(event.key==='Enter')addNPC()">
-      <button class="addbtn" onclick="addNPC()">Add</button>
-    </div>
-    <ul class="rlist" id="rlist"><li style="color:var(--dim);font-size:13px;font-style:italic;padding:8px 12px;list-style:none;text-align:left;">No NPCs yet.</li></ul>
-    <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-      <button class="clr-btn" onclick="clrRoster(this)" style="font-size:10px;padding:3px 10px;">Clear All</button>
-    </div>
-  </div>
-
+<div class="sec-title">Combat Tracker</div>
 <div class="scard">
       <div class="clabel">Combat Tracker</div>
 
@@ -2243,79 +2467,206 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
   </div>
 
 
-
-
-
-<div style="display:flex;justify-content:center;gap:14px;margin-top:24px;flex-wrap:wrap;">
-    <button class="gbtn" onclick="saveSession()">💾 Save Session</button>
-    <button class="tbtn" onclick="loadLastSession()" style="font-size:11px;padding:7px 16px;" title="Load most recent saved session">↩ Quick Load</button>
-    <button class="clr-btn" onclick="clrSession()">Clear Session</button>
+<div class="sec-title">Spell Reference</div>
+  <div class="scard">
+    <div class="clabel" style="display:flex;align-items:center;gap:8px;">
+      <span>Spell Lookup</span>
+      <button class="tbtn" onclick="showAddSpellForm()" style="font-size:10px;padding:3px 10px;margin-left:auto;" title="Add homebrew or custom spell">✦ Add Spell</button>
+      <button class="tbtn" onclick="exportSpells()" style="font-size:10px;padding:3px 8px;" title="Export spell library">⬇</button>
+      <button class="tbtn" onclick="importSpells()" style="font-size:10px;padding:3px 8px;" title="Import spell library">⬆</button>
+    </div>
+    <div class="spell-filter-row">
+      <input class="sin" id="spell-search" placeholder="Search spells…"
+        oninput="spellSearch(this.value)" style="flex:1;min-width:120px;">
+      <select class="ssel" onchange="spellFilterClass(this.value)" style="min-width:110px;">
+        <option value="">All Classes</option>
+        <option value="artificer">Artificer</option><option value="bard">Bard</option><option value="cleric">Cleric</option>
+        <option value="druid">Druid</option><option value="paladin">Paladin</option><option value="ranger">Ranger</option>
+        <option value="sorcerer">Sorcerer</option><option value="warlock">Warlock</option><option value="wizard">Wizard</option>
+      </select>
+      <select class="ssel" onchange="spellFilterLevel(this.value)" style="min-width:90px;">
+        <option value="">All Levels</option>
+        <option value="0">Cantrip</option>
+        <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
+        <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
+        <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
+      </select>
+      <select class="ssel" onchange="spellFilterSchool(this.value)" style="min-width:110px;">
+        <option value="">All Schools</option>
+        <option>Abjuration</option><option>Conjuration</option><option>Divination</option>
+        <option>Enchantment</option><option>Evocation</option><option>Illusion</option>
+        <option>Necromancy</option><option>Transmutation</option>
+      </select>
+    </div>
+    <div id="spell-lookup-results" class="spell-results"></div>
   </div>
+
+
+
+<div class="sec-title">Bestiary</div>
+<div class="scard">
+  <div class="clabel" style="display:flex;align-items:center;gap:8px;">
+    <span>Creature Reference</span>
+    <button class="tbtn" onclick="showAddCreatureForm()" style="font-size:10px;padding:3px 10px;margin-left:auto;" title="Add custom creature">✦ Add Creature</button>
+    <button class="tbtn" onclick="exportBestiary()" style="font-size:10px;padding:3px 8px;" title="Export bestiary">⬇</button>
+    <button class="tbtn" onclick="importBestiary()" style="font-size:10px;padding:3px 8px;" title="Import bestiary">⬆</button>
+    <input type="file" id="import-bestiary-file" accept=".json" style="display:none;" onchange="_handleBestiaryImport(event)">
+  </div>
+  <div class="spell-filter-row">
+    <input class="sin" id="bestiary-search" placeholder="Search creatures…"
+      oninput="bSearch(this.value)" style="flex:1;min-width:120px;">
+    <select class="ssel" onchange="bFilterType(this.value)" style="min-width:110px;">
+      <option value="">All Types</option>
+      <option>Aberration</option><option>Beast</option><option>Celestial</option>
+      <option>Construct</option><option>Dragon</option><option>Elemental</option>
+      <option>Fey</option><option>Fiend</option><option>Giant</option>
+      <option>Humanoid</option><option>Monstrosity</option><option>Ooze</option>
+      <option>Plant</option><option>Undead</option>
+    </select>
+    <select class="ssel" onchange="bFilterCr(this.value)" style="min-width:80px;">
+      <option value="">All CRs</option>
+      <option value="0">CR 0</option>
+      <option value="1/8">CR 1/8</option><option value="1/4">CR 1/4</option>
+      <option value="1/2">CR 1/2</option><option value="1">CR 1</option>
+      <option value="2">CR 2</option><option value="3">CR 3</option>
+      <option value="4">CR 4</option><option value="5">CR 5</option>
+      <option value="6">CR 6</option><option value="7">CR 7</option>
+      <option value="8">CR 8</option><option value="9">CR 9</option>
+      <option value="10">CR 10</option><option value="13">CR 13</option>
+      <option value="17">CR 17</option><option value="21">CR 21</option>
+    </select>
+  </div>
+  <div id="bestiary-results" class="spell-results" style="max-height:560px;"></div>
+</div>
+
+
+
+
+<div class="sec-title">Quick Reference</div>
+<div class="card full">
+    <div class="clabel">Conditions</div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+      <button class="tbtn" onclick="editQRef('conditions')" style="font-size:10px;padding:3px 9px;">Edit</button>
+    </div>
+    <div class="qref-grid" id="qref-conditions"></div>
+  </div>
+
+<div class="card full">
+    <div class="clabel">Exhaustion Levels</div>
+    <div class="rs" style="margin-bottom:10px;color:var(--dim);font-size:12px;">Edit each level — changes apply to Player Character cards immediately.</div>
+    <div id="qref-exhaustion"></div>
+  </div>
+
+<div class="card full">
+    <div class="clabel">Action Types</div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+      <button class="tbtn" onclick="editQRef('actions')" style="font-size:10px;padding:3px 9px;">Edit</button>
+    </div>
+    <div class="qref-grid" id="qref-actions"></div>
+  </div>
+
+  <div class="card coll-card" id="card-dc-cover">
+    <div class="clabel coll-clabel" style="justify-content:space-between;" onclick="toggleCard('card-dc-cover')">
+      <span>Reference Tables</span>
+      <button class="coll-btn" onclick="event.stopPropagation();toggleCard('card-dc-cover')" title="Collapse">⌃</button>
+    </div>
+    <div class="coll-body">
+      <div style="display:flex;gap:6px;justify-content:flex-end;margin-bottom:8px;" onclick="event.stopPropagation()">
+        <button class="tbtn" onclick="editQRef('dcs')" style="font-size:10px;padding:3px 9px;">Edit DC</button>
+        <button class="tbtn" onclick="editQRef('cover')" style="font-size:10px;padding:3px 9px;">Edit Cover</button>
+      </div>
+      <div class="rs" style="margin-bottom:6px;color:var(--gd);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;">Difficulty Classes</div>
+      <div class="qref-list" id="qref-dcs"></div>
+      <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+      <div class="rs" style="margin-bottom:6px;color:var(--gd);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;">Cover &amp; Visibility</div>
+      <div class="qref-list" id="qref-cover"></div>
+    </div>
+  </div>
+
+  <!-- ── CALCULATORS ── -->
+
+
+
+<div class="sec-title">Dice &amp; Tables</div>
+<div class="scard">
+      <div class="clabel">Dice Roller</div>
+    <!-- Die buttons -->
+    <div class="dice-btn-row">
+      <button class="die-btn" onclick="rollDie(4)"><span class="die-label">d4</span></button>
+      <button class="die-btn" onclick="rollDie(6)"><span class="die-label">d6</span></button>
+      <button class="die-btn" onclick="rollDie(8)"><span class="die-label">d8</span></button>
+      <button class="die-btn" onclick="rollDie(10)"><span class="die-label">d10</span></button>
+      <button class="die-btn" onclick="rollDie(12)"><span class="die-label">d12</span></button>
+      <button class="die-btn" onclick="rollDie(20)"><span class="die-label">d20</span></button>
+      <button class="die-btn die-btn-sm" onclick="rollDie(100)"><span class="die-label">d100</span></button>
+      <button class="die-btn die-btn-sm" onclick="rollDie(10000)"><span class="die-label">d10k</span></button>
+    </div>
+    <!-- Qty + Modifier row -->
+    <div class="dice-controls">
+      <div class="dice-ctrl-group">
+        <label class="dice-ctrl-lbl">Qty</label>
+        <input class="sin sin-sm sin-nospinner dice-ctrl-input" id="dice-qty" type="number" min="1" max="100" value="1" onkeydown="if(event.key==='Enter')$('dice-mod')?.focus()">
+      </div>
+      <span class="dice-ctrl-sep">×</span>
+      <div class="dice-ctrl-group">
+        <label class="dice-ctrl-lbl">Modifier</label>
+        <input class="sin sin-sm sin-nospinner dice-ctrl-input" id="dice-mod" type="number" value="0" onkeydown="if(event.key==='Enter'&&window._lastDieSides)rollDie(window._lastDieSides)">
+      </div>
+      <div class="dice-ctrl-group" style="margin-left:8px;">
+        <label class="dice-ctrl-lbl">Display</label>
+        <div style="display:flex;gap:4px;margin-top:2px;">
+          <button class="settings-size-btn on" id="dice-disp-combined" onclick="setDiceDisplay('combined')" title="Combined total">Σ</button>
+          <button class="settings-size-btn" id="dice-disp-separate" onclick="setDiceDisplay('separate')" title="Each die">⚄</button>
+        </div>
+      </div>
+    </div>
+    <!-- Result display -->
+    <div class="dice-result-area">
+      <div id="dice-notation" class="dice-notation">—</div>
+      <div id="dice-result" class="dice-result">—</div>
+      <div id="dice-breakdown" class="dice-breakdown"></div>
+    </div>
+    <!-- Log -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);">Roll History</span>
+      <button class="clr-btn" onclick="clearDiceLog()" style="padding:2px 10px;font-size:11px;">Clear</button>
+    </div>
+    <div id="dice-log" class="dice-log"></div>
+  </div>
+
+<div class="scard">
+      <div class="clabel">Custom Roll Tables</div>
+    <div class="sinrow">
+      <input class="sin" id="ct-name" placeholder="Table name" style="flex:1;" onkeydown="if(event.key==='Enter')$('ct-entries')?.focus()">
+    </div>
+    <textarea class="sin" id="ct-entries" placeholder="One entry per line..." style="width:100%;min-height:80px;font-family:'Crimson Pro',serif;font-size:14px;padding:7px 11px;border-radius:var(--rs);border:1px solid var(--bl);resize:vertical;margin:6px 0;background:var(--surface);color:var(--text);"></textarea>
+    <button class="addbtn" onclick="saveCT()" style="width:100%;margin-bottom:10px;">Save Table</button>
+    <div id="ct-saved"></div>
+  </div>
+
+  <!-- ── QUICK REFERENCES ── -->
+  
+  <!-- ── QUICK REFERENCE ── -->
+
 
 </div>
 
-<!-- ═══ SAVED SESSIONS ═══ -->
-
 <!-- ═══ GENERATOR TAB ═══ -->
 <div id="tab-generator" style="display:none;">
-  <div class="sh"><h2>Generator</h2></div>
-  <!-- Roll All + checkboxes -->
-  <div class="ck-panel">
-    <button class="roll-all" onclick="rollChecked()"><span>⚀</span> Roll Checked <span>⚅</span></button>
-    <div class="ckhdr" onclick="toggleCk()">
-      <span class="ck-title">Filter <span id="ckarrow" class="ckarrow">▾</span></span>
-      <button class="cksel" onclick="event.stopPropagation();setCkAll(true)">All</button>
-      <button class="cksel" onclick="event.stopPropagation();setCkAll(false)">None</button>
-    </div>
-    <div class="ckbody" id="ckbody" style="display:none;">
-      <div class="cksec"><div class="ckslbl">Character</div><div class="ckgrid">
-        <label class="ckitem"><input type="checkbox" id="ck-name" checked> NPC Name</label>
-        <label class="ckitem"><input type="checkbox" id="ck-species" checked> Species</label>
-        <label class="ckitem"><input type="checkbox" id="ck-gender" checked> Gender</label>
-        <label class="ckitem"><input type="checkbox" id="ck-class" checked> Class</label>
-        <label class="ckitem"><input type="checkbox" id="ck-subclass" checked> Subclass</label>
-        <label class="ckitem"><input type="checkbox" id="ck-appearance" checked> Appearance</label>
-        <label class="ckitem"><input type="checkbox" id="ck-personality" checked> Personality</label>
-        <label class="ckitem"><input type="checkbox" id="ck-mannerism" checked> Mannerism</label>
-        <label class="ckitem"><input type="checkbox" id="ck-talent" checked> Talent</label>
-        <label class="ckitem"><input type="checkbox" id="ck-trade" checked> Occupation</label>
-        <label class="ckitem"><input type="checkbox" id="ck-vf" checked> Virtue &amp; Flaw</label>
-        <label class="ckitem"><input type="checkbox" id="ck-ideal" checked> Ideal &amp; Bond</label>
-        <label class="ckitem"><input type="checkbox" id="ck-motive" checked> Motivation</label>
-        <label class="ckitem"><input type="checkbox" id="ck-secret" checked> Secret</label>
-      </div></div>
-      <div class="cksec"><div class="ckslbl">World</div><div class="ckgrid">
-        <label class="ckitem"><input type="checkbox" id="ck-place" checked> Settlement &amp; Places</label>
-        <label class="ckitem"><input type="checkbox" id="ck-loc" checked> Location</label>
-        <label class="ckitem"><input type="checkbox" id="ck-fac" checked> Faction</label>
-        <label class="ckitem"><input type="checkbox" id="ck-tavern" checked> Tavern</label>
-        <label class="ckitem"><input type="checkbox" id="ck-dungeon" checked> Dungeon Room</label>
-        <label class="ckitem"><input type="checkbox" id="ck-wx" checked> Weather</label>
-      </div></div>
-      <div class="cksec"><div class="ckslbl">Shop &amp; Loot</div><div class="ckgrid">
-        <label class="ckitem"><input type="checkbox" id="ck-shop" checked> Shop Inventory</label>
-        <label class="ckitem"><input type="checkbox" id="ck-loot" checked> Loot &amp; Reward</label>
-      </div></div>
-      <div class="cksec"><div class="ckslbl">Story</div><div class="ckgrid">
-        <label class="ckitem"><input type="checkbox" id="ck-hook" checked> Quest Hook</label>
-        <label class="ckitem"><input type="checkbox" id="ck-comp" checked> Complication</label>
-        <label class="ckitem"><input type="checkbox" id="ck-clock" checked> Ticking Clock</label>
-        <label class="ckitem"><input type="checkbox" id="ck-ripple" checked> Consequence Ripple</label>
-        <label class="ckitem"><input type="checkbox" id="ck-trap" checked> Trap</label>
-        <label class="ckitem"><input type="checkbox" id="ck-rumor" checked> Rumors</label>
-        <label class="ckitem"><input type="checkbox" id="ck-dilemma" checked> Moral Dilemma</label>
-        <label class="ckitem"><input type="checkbox" id="ck-prophecy" checked> Prophecy &amp; Omen</label>
-        <label class="ckitem"><input type="checkbox" id="ck-riddle" checked> Riddle &amp; Puzzle</label>
-      </div></div>
+<div class="sh"><h2>Generator</h2></div>
 
-    </div>
-  </div>
-  <button class="save-tmpl-btn" onclick="saveTemplate()">💾 Save as Template</button>
+<div class="gen-subnav" id="gen-subnav">
+  <button class="gen-subnav-btn active" data-gen-cat="pp" onclick="swGen('pp')">People &amp; Places</button>
+  <button class="gen-subnav-btn" data-gen-cat="enc" onclick="swGen('enc')">Encounters</button>
+  <button class="gen-subnav-btn" data-gen-cat="story" onclick="swGen('story')">Story &amp; Narrative</button>
+  <button class="gen-subnav-btn" data-gen-cat="tools" onclick="swGen('tools')">Tools</button>
+</div>
 
-  <!-- ── CHARACTER ── -->
-  <div class="sec-title sec-char">Character</div>
-  <div class="grid" id="sec-grid-sec-char">
-    <div class="card full">
+<div class="gen-cat" id="gen-cat-pp">
+<button class="roll-all" onclick="rollNPC(true,true,true);rollSettlement();rollLoc();rollFac();rollTavern();" style="margin-bottom:10px;"><span>⚀</span> Roll People &amp; Places <span>⚅</span></button>
+<div class="gen-sec-title">Characters</div>
+<div class="grid">
+<div class="card full">
       <div class="clabel" data-ck="ck-name">NPC</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:4px;">
         <div>
@@ -2515,13 +2866,10 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
         <button class="svbtn" onclick="si('NPC',t('r-name')+' ('+spLabel()+', '+genderLabel()+', age '+ageVal()+') | '+t('r-trade')+' | '+t('r-class-badge'))">+ Save Text</button>
       </div>
     </div>
-
-  </div>
-
-  <!-- ── WORLD ── -->
-  <div class="sec-title sec-world">World</div>
-  <div class="grid" id="sec-grid-sec-world">
-    <div class="card full">
+</div>
+<div class="gen-sec-title">Places</div>
+<div class="grid">
+<div class="card full">
       <div class="clabel" data-ck="ck-place">Settlement &amp; Place Names</div>
       <div class="srow" style="margin-bottom:10px;">
         <div style="flex:1;min-width:0;">
@@ -2564,7 +2912,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
         <button class="svbtn" onclick="si('Settlement',t('r-town')+' — '+t('r-settle-g')+' | Problem: '+t('r-settle-p'))">+ Save</button>
       </div>
     </div>
-    <div class="card full">
+<div class="card full">
       <div class="clabel" data-ck="ck-loc">Location</div>
       <div class="srow">
         <select class="ssel" id="loc-type-sel" onchange="rollLoc()">
@@ -2594,7 +2942,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div id="r-loc-people"></div>
       <div class="cact"><button class="rbtn" onclick="rollLoc()">Roll</button><button class="svbtn" onclick="si('Location',t('r-loc-type')+': '+t('r-loc')+' — '+t('r-loc-d'))">+ Save</button></div>
     </div>
-    <div class="card full">
+<div class="card">
       <div class="clabel" data-ck="ck-fac">Faction</div>
       <div class="srow" style="margin-bottom:10px;">
         <select class="ssel" id="fac-type-sel" style="width:100%;min-width:0;">
@@ -2620,7 +2968,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div id="r-fac-members"></div>
       <div class="cact"><button class="rbtn" onclick="rollFac()">Roll</button><button class="svbtn" onclick="si('Faction',t('r-fac')+' ('+t('r-fac-type')+') | '+t('r-fac-g'))">+ Save</button></div>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;">
+<div class="card" style="display:flex;flex-direction:column;">
       <div class="clabel" data-ck="ck-tavern">Tavern</div>
       <div class="rm" id="r-tavern-name" style="color:var(--gold);">—</div>
       <div class="rs" id="r-tavern-atm">—</div>
@@ -2630,8 +2978,14 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div id="r-tavern-menu" class="tavern-menu"></div>
       <div class="cact" style="margin-top:auto;"><button class="rbtn" onclick="rollTavern()">Roll</button><button class="rbtn" onclick="rollTavernMenu()" title="Generate menu" style="font-size:11px;">🍺 Menu</button><button class="svbtn" onclick="si('Tavern',t('r-tavern-name')+' — '+t('r-tavern-atm'))">+ Save</button></div>
     </div>
-    
-    <div class="card">
+</div>
+</div>
+
+<div class="gen-cat" id="gen-cat-enc" style="display:none;">
+<button class="roll-all" onclick="rollEnc();rollDungeonRoom();rollShop();rollLoot();rollTrap();" style="margin-bottom:10px;"><span>⚀</span> Roll Encounters <span>⚅</span></button>
+<div class="gen-sec-title">Combat &amp; Exploration</div>
+<div class="grid">
+<div class="card">
     <div class="clabel" data-ck="ck-encounter">Random Encounter</div>
     <div style="margin-bottom:8px;">
       <select class="ssel" id="enc-biome" style="width:100%;">
@@ -2651,8 +3005,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <button class="svbtn" id="enc-save" onclick="saveEncounterResult()">+ Save</button>
     </div>
   </div>
-  
-    <div class="card full" style="display:flex;flex-direction:column;">
+<div class="card full" style="display:flex;flex-direction:column;">
     <div class="clabel" data-ck="ck-dungeon">Dungeon Room</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
       <div style="flex:1;min-width:120px;"><div class="slabel" style="margin-bottom:3px;">Type</div>
@@ -2696,13 +3049,39 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     <div class="rs" id="r-droom-detail">—</div>
     <div class="cact" style="margin-top:auto;"><button class="rbtn" onclick="rollDungeonRoom()">Roll</button><button class="svbtn" onclick="si('Room',t('r-droom-name')+' | '+t('r-droom-feature'))">+ Save</button></div>
   </div>
+<div class="card">
+    <div class="clabel" data-ck="ck-trap">Trap</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div><div class="slabel" style="margin-bottom:3px;">Lethality</div>
+        <select class="ssel" id="trap-lethality">
+          <option value="random">🎲 Random</option>
+          <option value="nuisance">Nuisance</option>
+          <option value="moderate">Moderate</option>
+          <option value="severe">Severe</option>
+          <option value="deadly">Deadly</option>
+        </select>
+      </div>
+      <div><div class="slabel" style="margin-bottom:3px;">Setting</div>
+        <select class="ssel" id="trap-setting">
+          <option value="random">🎲 Random</option>
+          <option value="dungeon">Dungeon</option>
+          <option value="wilderness">Wilderness</option>
+          <option value="urban">Urban</option>
+          <option value="noble">Noble Estate</option>
+        </select>
+      </div>
+    </div>
+    <div class="rm" id="r-trap-type" style="color:var(--gold);">—</div>
+    <div class="rs" id="r-trap-trigger">—</div>
+    <div class="rs" id="r-trap-effect" style="color:var(--red);font-style:normal;">—</div>
+    <div class="rs" id="r-trap-detect" style="color:var(--teal);font-style:normal;">—</div>
+    <div class="rs" id="r-trap-disarm">—</div>
+    <div class="cact"><button class="rbtn" onclick="rollTrap()">Roll</button><button class="svbtn" onclick="si('Trap',t('r-trap-type')+' | '+t('r-trap-effect'))">+ Save</button></div>
   </div>
-
-
-
-<div class="sec-title sec-shop">Shop &amp; Loot</div>
-  <div class="grid" id="sec-grid-sec-shop">
-    <div class="card full">
+</div>
+<div class="gen-sec-title">Commerce</div>
+<div class="grid">
+<div class="card full">
       <div class="clabel" data-ck="ck-shop">Shop Inventory Generator</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
         <div>
@@ -2771,7 +3150,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div class="rm" id="r-shop-name" style="display:none;">—</div>
       <div class="rs" id="r-shop-type-label" style="display:none;">—</div>
     </div>
-    <div class="card full">
+<div class="card full">
       <div class="clabel" data-ck="ck-loot">Loot &amp; Reward</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
         <div>
@@ -2820,11 +3199,14 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div id="r-loot-list" style="display:flex;flex-direction:column;gap:6px;margin-top:4px;"></div>
       <div class="cact"><button class="rbtn" id="btn-roll-loot" onclick="rollLoot()">Roll</button><button class="svbtn" onclick="saveLootItems()">+ Save All</button></div>
     </div>
-  </div>
+</div>
+</div>
 
-<div class="sec-title sec-story">Story</div>
-  <div class="grid" id="sec-grid-sec-story">
-    <div class="card full">
+<div class="gen-cat" id="gen-cat-story" style="display:none;">
+<button class="roll-all" onclick="rollHook();rollComp();rollClock();rollRipple();rollRumor();rollDilemma();rollProphecy();rollRiddle();" style="margin-bottom:10px;"><span>⚀</span> Roll Story &amp; Narrative <span>⚅</span></button>
+<div class="gen-sec-title">Plot &amp; Complications</div>
+<div class="grid">
+<div class="card">
       <div class="clabel" data-ck="ck-hook">Quest Hook</div>
       <div class="rm" id="r-hook">—</div>
       <div class="rs" id="r-hook-who" style="color:var(--amb);font-style:normal;font-size:13px;">—</div>
@@ -2832,58 +3214,29 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div class="rs" id="r-hook-twist" style="color:var(--red);font-style:italic;font-size:13px;">—</div>
       <div class="cact"><button class="rbtn" onclick="rollHook()">Roll</button><button class="svbtn" onclick="si('Hook',t('r-hook')+' | '+t('r-hook-why'))">+ Save</button></div>
     </div>
-    <div class="card full">
+<div class="card">
       <div class="clabel" data-ck="ck-comp">Complication</div>
       <div class="rm" id="r-comp">—</div>
       <div class="rs" id="r-comp-effect">—</div>
       <div class="rs" id="r-comp-choice" style="color:var(--teal);font-style:normal;font-size:13px;">—</div>
       <div class="cact"><button class="rbtn" onclick="rollComp()">Roll</button><button class="svbtn" onclick="si('Complication',t('r-comp'))">+ Save</button></div>
     </div>
-    <div class="card">
+<div class="card">
       <div class="clabel" data-ck="ck-clock">Ticking Clock</div>
       <div class="rm" id="r-clock">—</div>
       <div class="rs" id="r-clock-stakes">—</div>
       <div class="rs" id="r-clock-fail" style="color:var(--red);font-style:italic;font-size:13px;">—</div>
       <div class="cact"><button class="rbtn" onclick="rollClock()">Roll</button><button class="svbtn" onclick="si('Clock',t('r-clock'))">+ Save</button></div>
     </div>
-    <div class="card">
+<div class="card">
       <div class="clabel" data-ck="ck-ripple">Consequence Ripple</div>
       <div class="rm" id="r-ripple">—</div>
       <div class="rs" id="r-ripple-who">—</div>
       <div class="rs" id="r-ripple-next" style="color:var(--teal);font-style:normal;font-size:13px;">—</div>
       <div class="cact"><button class="rbtn" onclick="rollRipple()">Roll</button><button class="svbtn" onclick="si('Ripple',t('r-ripple'))">+ Save</button></div>
     </div>
-    <div class="card">
-    <div class="clabel" data-ck="ck-trap">Trap</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-      <div><div class="slabel" style="margin-bottom:3px;">Lethality</div>
-        <select class="ssel" id="trap-lethality">
-          <option value="random">🎲 Random</option>
-          <option value="nuisance">Nuisance</option>
-          <option value="moderate">Moderate</option>
-          <option value="severe">Severe</option>
-          <option value="deadly">Deadly</option>
-        </select>
-      </div>
-      <div><div class="slabel" style="margin-bottom:3px;">Setting</div>
-        <select class="ssel" id="trap-setting">
-          <option value="random">🎲 Random</option>
-          <option value="dungeon">Dungeon</option>
-          <option value="wilderness">Wilderness</option>
-          <option value="urban">Urban</option>
-          <option value="noble">Noble Estate</option>
-        </select>
-      </div>
-    </div>
-    <div class="rm" id="r-trap-type" style="color:var(--gold);">—</div>
-    <div class="rs" id="r-trap-trigger">—</div>
-    <div class="rs" id="r-trap-effect" style="color:var(--red);font-style:normal;">—</div>
-    <div class="rs" id="r-trap-detect" style="color:var(--teal);font-style:normal;">—</div>
-    <div class="rs" id="r-trap-disarm">—</div>
-    <div class="cact"><button class="rbtn" onclick="rollTrap()">Roll</button><button class="svbtn" onclick="si('Trap',t('r-trap-type')+' | '+t('r-trap-effect'))">+ Save</button></div>
-  </div>
-    <div class="card">
-      <div class="clabel" data-ck="ck-rumor">Rumors</div>
+<div class="card full">
+      <div class="clabel" data-ck="ck-rumor">Rumour Generator</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
         <div>
           <div class="slabel" style="margin-bottom:3px;">Source</div>
@@ -2916,7 +3269,10 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div id="r-rumors-list" style="display:flex;flex-direction:column;gap:8px;"></div>
       <div class="cact"><button class="rbtn" onclick="rollRumors()">Roll</button></div>
     </div>
-    <div class="card">
+</div>
+<div class="gen-sec-title">Dramatic Moments</div>
+<div class="grid">
+<div class="card">
       <div class="clabel" data-ck="ck-dilemma">Moral Dilemma</div>
       <div class="rm" id="r-dilemma">—</div>
       <div class="rs" id="r-dilemma-a" style="color:var(--teal);font-style:normal;font-size:13px;">—</div>
@@ -2924,14 +3280,14 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <div class="rs" id="r-dilemma-cost">—</div>
       <div class="cact"><button class="rbtn" onclick="rollDilemma()">Roll</button><button class="svbtn" onclick="si('Dilemma',t('r-dilemma'))">+ Save</button></div>
     </div>
-    <div class="card">
+<div class="card">
       <div class="clabel" data-ck="ck-prophecy">Prophecy &amp; Omen</div>
       <div class="rm" id="r-prophecy" style="font-style:italic;color:var(--muted);">—</div>
       <div class="rs" id="r-prophecy-sign" style="color:var(--amb);font-style:normal;font-size:13px;">—</div>
       <div class="rs" id="r-prophecy-warning">—</div>
       <div class="cact"><button class="rbtn" onclick="rollProphecy()">Roll</button><button class="svbtn" onclick="si('Prophecy',t('r-prophecy'))">+ Save</button></div>
     </div>
-    <div class="card full">
+<div class="card full">
       <div class="clabel" data-ck="ck-riddle">Riddle &amp; Puzzle</div>
       <div class="srow"><select class="ssel" id="rdiff-sel" style="max-width:220px;flex:none;">
         <option value="mix">🎲 Mixed</option>
@@ -2961,219 +3317,97 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
         <button class="svbtn" onclick="si('Puzzle',t('r-puzzle'))">+ Save Puzzle</button>
       </div>
     </div>
-  </div>
+</div>
 </div>
 
+<div class="gen-cat" id="gen-cat-tools" style="display:none;">
 
-
-
-<div id="tab-saved" style="display:none;">
-  <div class="sh sh-centered">
-    <h2>Saved</h2>
-  </div>
-
-  <div class="saved-section">
-    <div class="saved-section-hdr" onclick="toggleSavedSec('notes')">
-      <h3>Notes <span id="arr-notes" class="ckarrow">&#9662;</span></h3>
-      <div style="display:flex;gap:6px;" onclick="event.stopPropagation()">
-        <button class="tcbtn" onclick="exportQNotes()">Export</button>
-        <button class="clr-btn" onclick="_clearToolsNotes(this)">Clear</button>
-      </div>
-    </div>
-    <div id="sec-notes" style="padding:12px 16px 14px;">
-      <textarea class="qnotes-area" id="tools-notes-area" style="min-height:140px;width:100%;box-sizing:border-box;" placeholder="Notes are shared with Quick Notes — write here or use the floating panel..." oninput="syncToolsNotes()"></textarea>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;">
-        <button class="tbtn" onclick="cpyQNotes()" style="font-size:10px;padding:4px 12px;">Copy</button>
-        <button class="tbtn" onclick="pasteToQNotes()" style="font-size:10px;padding:4px 12px;">Paste</button>
-      </div>
-    </div>
-  </div>
-
-  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:0 0 1.5rem;"></div>
-
-  <div class="saved-section">
-    <div class="saved-section-hdr" onclick="toggleSavedSec('sessions')">
-      <h3>Sessions <span id="arr-sessions" class="ckarrow">▾</span></h3>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;" onclick="event.stopPropagation()">
-        
-        <button class="tcbtn" onclick="exportAllSessions('word')">Word</button>
-        <button class="tcbtn" onclick="exportAllSessions('excel')">Excel</button>
-        <button class="tcbtn" onclick="exportAllSessions('html')">HTML</button>
-        <button class="clr-btn" onclick="clrSessions()">Clear All</button>
-      </div>
-    </div>
-    <div id="sec-sessions"><div id="ss-con"></div></div>
-  </div>
-
-  <div class="saved-section">
-    <div class="saved-section-hdr" onclick="toggleSavedSec('party-saves')">
-      <h3>Party <span id="arr-party-saves" class="ckarrow">&#9662;</span></h3>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;" onclick="event.stopPropagation()">
-        
-        <button class="tcbtn" onclick="exportAllPartySaves('word')">Word</button>
-        <button class="tcbtn" onclick="exportAllPartySaves('excel')">Excel</button>
-        <button class="tcbtn" onclick="exportAllPartySaves('html')">HTML</button>
-        <button class="clr-btn" onclick="clrPartySaves()">Clear All</button>
-      </div>
-    </div>
-    <div id="sec-party-saves"><div id="party-saves-con"></div></div>
-  </div>
-
-  <div class="saved-section">
-    <div class="saved-section-hdr" onclick="toggleSavedSec('tmpls')">
-      <h3>Character Templates <span id="arr-tmpls" class="ckarrow">▾</span></h3>
-      <div style="display:flex;gap:8px;" onclick="event.stopPropagation()">
-        
-        <button class="tcbtn" onclick="exportTmpls('word')">Word</button>
-        <button class="tcbtn" onclick="exportTmpls('excel')">Excel</button>
-        <button class="tcbtn" onclick="exportTmpls('html')">HTML</button>
-        <button class="clr-btn" onclick="clrTmpl()">Clear All</button>
-      </div>
-    </div>
-    <div id="sec-tmpls"><div id="tmpl-con"></div></div>
-  </div>
-
-  <div class="saved-section">
-    <div class="saved-section-hdr" onclick="toggleSavedSec('ideas')">
-      <h3>Story Ideas <span id="arr-ideas" class="ckarrow">▾</span></h3>
-      <div style="display:flex;gap:8px;" onclick="event.stopPropagation()">
-        
-        <button class="tcbtn" onclick="exportIdeas('word')">Word</button>
-        <button class="tcbtn" onclick="exportIdeas('excel')">Excel</button>
-        <button class="tcbtn" onclick="exportIdeas('html')">HTML</button>
-        <button class="clr-btn" onclick="clrIdeas()">Clear All</button>
-      </div>
-    </div>
-    <div id="sec-ideas" style="padding:10px 16px 4px;">
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
-        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;" id="frow"></div>
-        <div id="tag-filter-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-top:1px solid var(--border);padding-top:8px;">
-          <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gd);flex-shrink:0;">Tags:</span>
-          <button class="tag-chip active" id="tag-all-btn" onclick="setTagFilter('all')" style="flex-shrink:0;">All</button>
-          <div id="tag-chips" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;"></div>
-        </div>
-      </div>
-      <div id="ideas-pinned" style="margin-bottom:12px;"></div>
-      <div id="ideas-con"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ TOOLS ═══ -->
-<div id="tab-tools" style="display:none;">
-  <div class="sh"><h2>Tools</h2></div>
-  
-  <!-- ── DICE ROLLER ── -->
-<div class="sec-title">Dice Roller</div>
-  <div class="scard">
-      <div class="clabel">Dice Roller</div>
-    <!-- Die buttons -->
-    <div class="dice-btn-row">
-      <button class="die-btn" onclick="rollDie(4)"><span class="die-label">d4</span></button>
-      <button class="die-btn" onclick="rollDie(6)"><span class="die-label">d6</span></button>
-      <button class="die-btn" onclick="rollDie(8)"><span class="die-label">d8</span></button>
-      <button class="die-btn" onclick="rollDie(10)"><span class="die-label">d10</span></button>
-      <button class="die-btn" onclick="rollDie(12)"><span class="die-label">d12</span></button>
-      <button class="die-btn" onclick="rollDie(20)"><span class="die-label">d20</span></button>
-      <button class="die-btn die-btn-sm" onclick="rollDie(100)"><span class="die-label">d100</span></button>
-      <button class="die-btn die-btn-sm" onclick="rollDie(10000)"><span class="die-label">d10k</span></button>
-    </div>
-    <!-- Qty + Modifier row -->
-    <div class="dice-controls">
-      <div class="dice-ctrl-group">
-        <label class="dice-ctrl-lbl">Qty</label>
-        <input class="sin sin-sm sin-nospinner dice-ctrl-input" id="dice-qty" type="number" min="1" max="100" value="1" onkeydown="if(event.key==='Enter')$('dice-mod')?.focus()">
-      </div>
-      <span class="dice-ctrl-sep">×</span>
-      <div class="dice-ctrl-group">
-        <label class="dice-ctrl-lbl">Modifier</label>
-        <input class="sin sin-sm sin-nospinner dice-ctrl-input" id="dice-mod" type="number" value="0" onkeydown="if(event.key==='Enter'&&window._lastDieSides)rollDie(window._lastDieSides)">
-      </div>
-      <div class="dice-ctrl-group" style="margin-left:8px;">
-        <label class="dice-ctrl-lbl">Display</label>
-        <div style="display:flex;gap:4px;margin-top:2px;">
-          <button class="settings-size-btn on" id="dice-disp-combined" onclick="setDiceDisplay('combined')" title="Combined total">Σ</button>
-          <button class="settings-size-btn" id="dice-disp-separate" onclick="setDiceDisplay('separate')" title="Each die">⚄</button>
-        </div>
-      </div>
-    </div>
-    <!-- Result display -->
-    <div class="dice-result-area">
-      <div id="dice-notation" class="dice-notation">—</div>
-      <div id="dice-result" class="dice-result">—</div>
-      <div id="dice-breakdown" class="dice-breakdown"></div>
-    </div>
-    <!-- Log -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);">Roll History</span>
-      <button class="clr-btn" onclick="clearDiceLog()" style="padding:2px 10px;font-size:11px;">Clear</button>
-    </div>
-    <div id="dice-log" class="dice-log"></div>
-  </div>
-  
-  <!-- ── CUSTOM ROLL TABLES ── -->
-<div class="sec-title">Custom Roll Tables</div>
-  <div class="scard">
-      <div class="clabel">Custom Roll Tables</div>
+<div class="sec-title">Calendar</div>
+<div class="scard">
+      <div class="clabel">Calendar &amp; Timeline</div>
+    <label class="slabel">In-World Date</label>
     <div class="sinrow">
-      <input class="sin" id="ct-name" placeholder="Table name" style="flex:1;" onkeydown="if(event.key==='Enter')$('ct-entries')?.focus()">
+      <input class="sin sin-sm sin-nospinner" id="cal-day" value="1" placeholder="Day" style="width:65px;flex:none;" oninput="renderCalDisplay();persist()" onkeydown="if(event.key==='Enter')$('cal-year')?.focus()">
+      <select class="ssel" id="cal-month" style="flex:2;min-width:130px;" onchange="renderCalDisplay();persist()"></select>
+      <input class="sin sin-sm sin-nospinner" id="cal-year" value="1" placeholder="Year" style="width:70px;flex:none;" oninput="renderCalDisplay();persist()" onkeydown="if(event.key==='Enter')this.blur()">
+      <button class="tbtn" onclick="advDay(-1)" style="flex:none;">−Day</button>
+      <button class="tbtn" onclick="advDay(1)" style="flex:none;">+Day</button>
+      <button class="tbtn" onclick="advDay(-7)" style="flex:none;">−Week</button>
+      <button class="tbtn" onclick="advDay(7)" style="flex:none;">+Week</button>
     </div>
-    <textarea class="sin" id="ct-entries" placeholder="One entry per line..." style="width:100%;min-height:80px;font-family:'Crimson Pro',serif;font-size:14px;padding:7px 11px;border-radius:var(--rs);border:1px solid var(--bl);resize:vertical;margin:6px 0;background:var(--surface);color:var(--text);"></textarea>
-    <button class="addbtn" onclick="saveCT()" style="width:100%;margin-bottom:10px;">Save Table</button>
-    <div id="ct-saved"></div>
-  </div>
-
-  <!-- ── QUICK REFERENCES ── -->
-  
-  <!-- ── QUICK REFERENCE ── -->
-<div class="sec-title">Quick Reference</div>
-<div class="card full">
-    <div class="clabel">Conditions</div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
-      <button class="tbtn" onclick="editQRef('conditions')" style="font-size:10px;padding:3px 9px;">Edit</button>
+    <div id="cal-display" style="font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin:8px 0 10px;letter-spacing:.06em;"></div>
+    <label class="slabel">Custom Month Tables</label>
+    <div id="mset-list" style="margin-bottom:8px;display:flex;flex-direction:column;gap:4px;"></div>
+    <div class="sinrow" style="margin-bottom:6px;">
+      <input class="sin" id="mset-name" placeholder="Table name (e.g. Greyhawk)" style="flex:1;" onkeydown="if(event.key==='Enter')$('mset-months')?.focus()">
     </div>
-    <div class="qref-grid" id="qref-conditions"></div>
-  </div>
-
-<div class="card full">
-    <div class="clabel">Exhaustion Levels</div>
-    <div class="rs" style="margin-bottom:10px;color:var(--dim);font-size:12px;">Edit each level — changes apply to Player Character cards immediately.</div>
-    <div id="qref-exhaustion"></div>
-  </div>
-
-<div class="card full">
-    <div class="clabel">Action Types</div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
-      <button class="tbtn" onclick="editQRef('actions')" style="font-size:10px;padding:3px 9px;">Edit</button>
+    <textarea class="sin" id="mset-months" placeholder="One month per line..." style="width:100%;min-height:80px;font-family:'Crimson Pro',serif;font-size:14px;padding:7px 11px;border-radius:var(--rs);border:1px solid var(--bl);resize:vertical;margin-bottom:6px;background:var(--surface);color:var(--text);" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="addbtn" onclick="saveMset()" style="width:100%;">Save Month Table</button>
+    <label class="slabel" style="margin-top:12px;">Add Event</label>
+    <div class="sinrow">
+      <input class="sin" id="ev-text" placeholder="Event description" onkeydown="if(event.key==='Enter')addEv()">
+      <select class="ssel" id="ev-rel" style="max-width:120px;flex:none;"><option value="now">Current</option><option value="past">Past</option><option value="future">Upcoming</option></select>
+      <button class="addbtn" onclick="addEv()">Add</button>
     </div>
-    <div class="qref-grid" id="qref-actions"></div>
-  </div>
-
-  <div class="card coll-card" id="card-dc-cover">
-    <div class="clabel coll-clabel" style="justify-content:space-between;" onclick="toggleCard('card-dc-cover')">
-      <span>Reference Tables</span>
-      <button class="coll-btn" onclick="event.stopPropagation();toggleCard('card-dc-cover')" title="Collapse">⌃</button>
-    </div>
-    <div class="coll-body">
-      <div style="display:flex;gap:6px;justify-content:flex-end;margin-bottom:8px;" onclick="event.stopPropagation()">
-        <button class="tbtn" onclick="editQRef('dcs')" style="font-size:10px;padding:3px 9px;">Edit DC</button>
-        <button class="tbtn" onclick="editQRef('cover')" style="font-size:10px;padding:3px 9px;">Edit Cover</button>
+    <ul class="evlist" id="evlist"><li style="color:var(--dim);font-size:13px;font-style:italic;padding:5px 0;">No events yet.</li></ul>
+    <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+    <label class="slabel">Weather &amp; Atmosphere</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+      <div>
+        <div class="slabel" style="margin-bottom:3px;">Season</div>
+        <select class="ssel" id="wx-season" style="width:100%;min-width:0;">
+          <option value="random">🎲 Random</option>
+          <option value="spring">Spring</option><option value="summer">Summer</option>
+          <option value="autumn">Autumn</option><option value="winter">Winter</option>
+        </select>
       </div>
-      <div class="rs" style="margin-bottom:6px;color:var(--gd);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;">Difficulty Classes</div>
-      <div class="qref-list" id="qref-dcs"></div>
-      <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-      <div class="rs" style="margin-bottom:6px;color:var(--gd);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;">Cover &amp; Visibility</div>
-      <div class="qref-list" id="qref-cover"></div>
+      <div>
+        <div class="slabel" style="margin-bottom:3px;">Climate</div>
+        <select class="ssel" id="wx-climate" style="width:100%;min-width:0;">
+          <option value="random">🎲 Random</option>
+          <option value="temperate">Temperate</option><option value="arctic">Arctic / Tundra</option>
+          <option value="desert">Desert / Arid</option><option value="tropical">Tropical</option>
+          <option value="coastal">Coastal</option><option value="mountain">Mountain</option>
+        </select>
+      </div>
+      <div>
+        <div class="slabel" style="margin-bottom:3px;">Severity</div>
+        <select class="ssel" id="wx-severity" style="width:100%;min-width:0;">
+          <option value="random">🎲 Random</option>
+          <option value="calm">Calm</option><option value="mild">Mild</option>
+          <option value="notable">Notable</option><option value="severe">Severe</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="r-wx-tags"></div>
+    <div class="rm" id="r-wx" style="margin-bottom:4px;">—</div>
+    <div class="rs" id="r-wx-temp" style="color:var(--amb);font-style:normal;font-size:13px;margin-bottom:3px;">—</div>
+    <div class="rs" id="r-wx-wind" style="font-size:13px;margin-bottom:3px;">—</div>
+    <div class="rs" id="r-mood">—</div>
+    <div class="rs" id="r-wx-travel" style="color:var(--teal);font-style:normal;font-size:13px;">—</div>
+    <div class="cact" style="margin-top:8px;">
+      <button class="rbtn" onclick="rollWx()">Roll Weather</button>
+      <button class="svbtn" onclick="si('Weather',t('r-wx')+' — '+t('r-wx-temp')+' | '+t('r-wx-wind'))">+ Save</button>
     </div>
   </div>
 
-  <!-- ── CALCULATORS ── -->
+<div class="sec-title">Story Ideas</div>
+<div class="scard">
+  <div class="clabel">Story Ideas</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+    <button class="tcbtn" onclick="exportIdeas('word')">Word</button>
+    <button class="tcbtn" onclick="exportIdeas('excel')">Excel</button>
+    <button class="tcbtn" onclick="exportIdeas('html')">HTML</button>
+    <button class="clr-btn" onclick="clrIdeas()">Clear All</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"><div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;" id="frow"></div><div id="tag-filter-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-top:1px solid var(--border);padding-top:8px;"><span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gd);flex-shrink:0;">Tags:</span><button class="tag-chip active" id="tag-all-btn" onclick="setTagFilter('all')" style="flex-shrink:0;">All</button><div id="tag-chips" style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;"></div></div></div>
+  <div id="ideas-pinned" style="margin-bottom:12px;"></div>
+  <div id="ideas-con"></div>
+</div>
 
 <div class="sec-title">Calculators</div>
-
-  
-
-  <div class="card">
+<div class="card">
     <div class="clabel">Travel Time</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
       <div><div class="slabel" style="margin-bottom:3px;">Distance (miles)</div><input class="sin sin-sm sin-nospinner" id="trv-dist" type="number" min="1" value="10" oninput="calcTravel()" onkeydown="if(event.key==='Enter'){calcTravel();this.blur();}"></div>
@@ -3187,8 +3421,7 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     </div>
     <div class="qref-list" id="trv-result"><div class="qref-row"><span class="qref-dclbl" style="color:var(--muted);">Enter distance above.</span></div></div>
   </div>
-
-  <div class="card">
+<div class="card">
     <div class="clabel">Loot Value</div>
     <div class="sinrow" style="margin-bottom:8px;">
       <input class="sin" id="loot-item-name" placeholder="Item name" onkeydown="if(event.key==='Enter')addLootItem()">
@@ -3202,18 +3435,32 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     </div>
   </div>
 
-
-
-  <!-- ── GENERATORS ── -->
-  
-  <!-- ── GENERATORS ── -->
-
+</div>
 
 </div>
 
-<!-- ═══ SETTINGS TAB ═══ -->
+
+
+
+
+
+
+
+
 <div id="tab-settings" style="display:none;">
   <div class="sh"><h2>Settings</h2></div>
+
+<div class="sec-title">Notes</div>
+<div class="scard">
+  <div class="clabel">Quick Notes</div>
+  <textarea class="qnotes-area" id="tools-notes-area" style="min-height:140px;width:100%;box-sizing:border-box;" placeholder="Notes are shared with Quick Notes — write here or use the floating panel..." oninput="syncToolsNotes()"></textarea>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;">
+    <button class="tbtn" onclick="exportQNotes()" style="font-size:10px;padding:4px 12px;">Export</button>
+    <button class="tbtn" onclick="cpyQNotes()" style="font-size:10px;padding:4px 12px;">Copy</button>
+    <button class="clr-btn" onclick="_clearToolsNotes(this)" style="font-size:10px;padding:4px 12px;">Clear</button>
+  </div>
+</div>
+
 
   <div class="sec-title">Appearance</div>
   <div class="scard">
@@ -3372,14 +3619,6 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       <button class="settings-toggle-btn" id="confirmclear-btn" onclick="toggleConfirmClear()">Off</button>
     </div>
     <div style="height:1px;background:var(--border);margin:12px 0;"></div>
-    <div class="settings-row">
-      <div class="settings-info"><div class="slabel" style="margin-bottom:2px;">Default Tension Level</div><div class="rs" style="margin:0;">Starting tension when a new session loads.</div></div>
-      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
-        <button class="settings-size-btn" onclick="adjDefaultTension(-1)" style="width:28px;padding:4px;">−</button>
-        <span id="default-tension-display" style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);min-width:20px;text-align:center;">1</span>
-        <button class="settings-size-btn" onclick="adjDefaultTension(1)" style="width:28px;padding:4px;">+</button>
-      </div>
-    </div>
     
   </div>
 
@@ -3411,21 +3650,48 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
       </div>
     </div>
     <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+
     <div class="settings-row">
       <div class="settings-info">
-        <div class="slabel" style="margin-bottom:2px;">Sessions File Prefix</div>
-        <div class="rs" style="margin:0;">Prepended to exported session file names.</div>
+        <div class="slabel" style="margin-bottom:2px;">Campaign Backup</div>
+        <div class="rs" style="margin:0;">Export or import the entire current campaign as a JSON file.</div>
       </div>
-      <input class="sin" id="sess-export-label" placeholder="e.g. Campaign2025" style="width:140px;flex-shrink:0;" oninput="saveExportLabels()" onkeydown="if(event.key==='Enter')$('ideas-export-label')?.focus()">
+      <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        <button class="tbtn" onclick="exportCampaign()" style="font-size:10px;padding:4px 10px;">⬇ Export</button>
+        <button class="tbtn" onclick="importCampaign()" style="font-size:10px;padding:4px 10px;">⬆ Import</button>
+        <input type="file" id="import-campaign-file" accept=".json" style="display:none;" onchange="_handleCampaignImport(event)">
+      </div>
     </div>
+
     <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+
     <div class="settings-row">
       <div class="settings-info">
-        <div class="slabel" style="margin-bottom:2px;">Ideas File Prefix</div>
-        <div class="rs" style="margin:0;">Prepended to exported saved ideas file names.</div>
+        <div class="slabel" style="margin-bottom:2px;">Party Characters</div>
+        <div class="rs" style="margin:0;">Export or import PC cards. Import merges or replaces existing characters.</div>
       </div>
-      <input class="sin" id="ideas-export-label" placeholder="e.g. MyIdeas" style="width:140px;flex-shrink:0;" oninput="saveExportLabels()" onkeydown="if(event.key==='Enter')this.blur()">
+      <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        <button class="tbtn" onclick="exportPCs()" style="font-size:10px;padding:4px 10px;">⬇ Export</button>
+        <button class="tbtn" onclick="importPCs()" style="font-size:10px;padding:4px 10px;">⬆ Import</button>
+        <input type="file" id="import-pcs-file" accept=".json" style="display:none;" onchange="_handlePCsImport(event)">
+      </div>
     </div>
+
+    <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+
+    <div class="settings-row">
+      <div class="settings-info">
+        <div class="slabel" style="margin-bottom:2px;">Spell Library</div>
+        <div class="rs" style="margin:0;">Export or import custom spells and spell edits. Merges with existing library.</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;">
+        <button class="tbtn" onclick="exportSpells()" style="font-size:10px;padding:4px 10px;">⬇ Export</button>
+        <button class="tbtn" onclick="importSpells()" style="font-size:10px;padding:4px 10px;">⬆ Import</button>
+        <input type="file" id="import-spells-file" accept=".json" style="display:none;" onchange="_handleSpellsImport(event)">
+      </div>
+    </div>
+
+
     
   </div>
 
@@ -3443,7 +3709,8 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
     </div>
   </div>
 
-</div><!-- tab-settings -->
+</div>
+
 </div><!-- .app --><script>const SPELLS=[
 {n:"Acid Splash",l:0,sc:"Conjuration",cl:["wizard","sorcerer","artificer"],ct:"1 action",r:"60 ft",c:"VS",d:"Instant",desc:"Hurl acid at 1-2 creatures within 5 ft of each other. 1d6 acid damage on failed Dex save."},
 {n:"Blade Ward",l:0,sc:"Abjuration",cl:["bard","sorcerer","warlock","wizard"],ct:"1 action",r:"Self",c:"VS",d:"1 round",desc:"Resistance to bludgeoning, piercing, and slashing damage from weapon attacks until end of next turn."},
@@ -3560,7 +3827,14 @@ body.light .exh-level-badge.exh-danger{ background: rgba(160,48,48,.1); }
 {n:"True Polymorph",l:9,sc:"Transmutation",cl:["bard","warlock","wizard"],ct:"1 action",r:"30 ft",c:"VSM",d:"Conc, 1 hour",desc:"Wis save or transform into beast/monstrosity (any CR) or object into creature. Permanent if held 1 hour."},
 {n:"Wish",l:9,sc:"Conjuration",cl:["sorcerer","wizard"],ct:"1 action",r:"Self",c:"V",d:"Instant",desc:"Duplicate any spell <=8th level, or attempt any effect. 33% chance to never cast Wish again. Str 3 for 2d4 days."}
 ];
-if(typeof sw==='undefined'){function sw(tab){var tabs=['party','session','generator','saved','tools','settings'];tabs.forEach(function(id){var e=document.getElementById('tab-'+id);if(e)e.style.display=id===tab?'':'none';});}}
+if(typeof sw==='undefined'){function sw(tab){
+  ['party','session','combat','generator','settings'].forEach(function(id){
+    var e=document.getElementById('tab-'+id);if(e)e.style.display=id===tab?'':'none';
+  });
+  document.querySelectorAll('.nav-tab[data-tab]').forEach(function(btn){
+    btn.classList.toggle('active',btn.dataset.tab===tab);
+  });
+}}
 
 
 
@@ -3587,7 +3861,7 @@ const t=id=>$(id)?.textContent||'—';
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const ri=(mn,mx)=>Math.floor(Math.random()*(mx-mn+1))+mn;
 const pad=n=>String(n).padStart(2,'0');
-function sr(id,v){const e=$(id);if(!e)return;e.textContent=v;e.classList.remove('fresh');void e.offsetWidth;e.classList.add('fresh');}
+function sr(id,v){const e=$(id);if(!e||e.dataset.locked==='1')return;e.textContent=v;e.classList.remove('fresh');void e.offsetWidth;e.classList.add('fresh');}
 function eh(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function age(){return $('r-age')?.dataset?.age||'—';}
 function ageVal(){return $('r-age')?.dataset?.age||'—';}
@@ -4508,7 +4782,7 @@ document.addEventListener('keydown',function(e){
   const ce=document.activeElement?.contentEditable==='true';
   if(tag==='input'||tag==='textarea'||tag==='select'||ce) return;
 
-  const tabs=['party','session','generator','saved','tools','settings'];
+  const tabs=['party','session','combat','generator','settings'];
   if(e.key>='1'&&e.key<='6'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){
     sw(tabs[parseInt(e.key)-1]);return;
   }
@@ -5815,7 +6089,7 @@ function exportTmpl(id,fmt){
 }
 
 function renderTmpls(){
-  const c=$('tmpl-con');if(!TMPLS.length){c.innerHTML='<div class="empty">No templates saved yet.</div>';return;}
+  const c=$('tmpl-con');if(!TMPLS.length){c.innerHTML='<div class="empty" data-icon="✦">No templates saved yet.</div>';return;}
   c.innerHTML=TMPLS.map(tmpl=>`<div class="tc"><div class="th"><span class="tts">&#9670; ${tmpl.ts}</span><div class="tact"><button class="tcbtn" onclick="exportTmpl(${tmpl.id},'word')">Word</button><button class="tcbtn" onclick="exportTmpl(${tmpl.id},'excel')">Excel</button><button class="tcbtn" onclick="exportTmpl(${tmpl.id},'html')">HTML</button><button class="tcbtn" onclick="cpyTmpl(${tmpl.id})">Copy</button><button class="xbtn" onclick="rmTmpl(${tmpl.id})">&#215;</button></div></div>${tmpl.fields.map((f,i)=>`<div class="trow"><span class="tkey">${f.key}</span><div id="tv-${tmpl.id}-${i}"><div class="tval">${eh(f.val)}</div>${f.sub?`<div class="tsub">${eh(f.sub)}</div>`:''}</div><div class="fact"><button class="fedit" onclick="editField(${tmpl.id},${i})">Edit</button><button class="fremove" onclick="rmField(${tmpl.id},${i})">&#215;</button></div></div>`).join('')}</div>`).join('');
 }
 
@@ -6155,7 +6429,7 @@ function toggleCbtCond(id,cond){
 function renderCbt(){
   const l=$('ilist');if(!l)return;
   if(!CBT.length){
-    l.innerHTML='<li style="color:var(--dim);font-size:13px;font-style:italic;padding:8px 12px;list-style:none;text-align:left;">No combatants yet.</li>';
+    l.innerHTML='<li class="empty" data-icon="⚔" style="list-style:none;">No combatants yet.</li>';
     const eb=$('cbt-expand-btn');if(eb)eb.style.display='none';
     return;
   }
@@ -6173,6 +6447,7 @@ function renderCbt(){
     <button class="hpbtn" onclick="adjHp(${c.id},1)" title="Heal">+</button>
     <div class="cbt-conds">${condChips}${addCondBtn}</div>
     <button class="xbtn" onclick="rmCbt(${c.id})" title="Remove">&#215;</button>
+    ${c.maxHp>0?`<div class="cbt-hp-bar-wrap" style="width:100%;"><div class="cbt-hp-bar" style="width:${Math.round(Math.min(1,Math.max(0,c.hp/c.maxHp))*100)}%;background:${_pcHpColor(Math.min(1,Math.max(0,c.hp/c.maxHp)))}"></div></div>`:''}
   </li>`;
   }).join('');
   const eb=$('cbt-expand-btn');
@@ -6258,7 +6533,8 @@ function saveSession(){
     rating:0,ratingNote:'',
   };
   if(!snap.notes&&!snap.recap.what&&!snap.recap.revealed&&!snap.recap.threads&&!snap.recap.next&&!snap.roster.length){showToast('Add notes or a recap first');return;}
-  SESSIONS.unshift(snap);renderSessions();persist();showToast('Session saved');if(typeof sw==='function')sw('saved');
+  if(tRun){clearInterval(tInt);tRun=false;$('tstart').textContent='Resume';$('tstart').classList.remove('running');}
+  snap.duration=tSec;SESSIONS.unshift(snap);renderSessions();persist();showToast('Session saved');if(typeof sw==='function')sw('saved');
 }
 function rmSession(id){SESSIONS=SESSIONS.filter(x=>x.id!==id);renderSessions();persist();}
 function clrSessions(){if(SESSIONS.length&&(!confirmClear||confirm('Clear all saved sessions?'))){SESSIONS=[];renderSessions();persist();}}
@@ -6422,7 +6698,7 @@ function exportAllPartySaves(fmt){
 
 function renderPartySaves(){
   const c=$('party-saves-con');if(!c)return;
-  if(!PARTY_SAVES.length){c.innerHTML='<div class="empty">No party snapshots saved yet.</div>';return;}
+  if(!PARTY_SAVES.length){c.innerHTML='<div class="empty" data-icon="✦">No party snapshots saved yet.</div>';return;}
   c.innerHTML=PARTY_SAVES.map(snap=>`<div class="sscard">
     <div class="sshd">
       <div class="ssts"><div class="sstitle">${eh(snap.partyName)}</div><div class="ssdts">&#9670; ${snap.ts}</div></div>
@@ -6463,7 +6739,7 @@ function importPartySnap(id){
 
 function renderSessions(){
   const c=$('ss-con');if(!c)return;
-  if(!SESSIONS.length){c.innerHTML='<div class="empty">No sessions saved yet.</div>';return;}
+  if(!SESSIONS.length){c.innerHTML='<div class="empty" data-icon="📜">No sessions saved yet.</div>';return;}
   c.innerHTML=SESSIONS.map(s=>`<div class="sscard">
     <div class="sshd">
       <div class="ssts">
@@ -6486,7 +6762,7 @@ function renderSessions(){
       </div>
     </div>
     <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;">
-      <span style="font-size:12px;color:var(--muted);">Timer: <strong style="color:var(--text)">${s.timer}</strong></span>
+      <span style="font-size:12px;color:var(--muted);">Duration: <strong style="color:var(--text)">${s.duration?Math.floor(s.duration/3600)+'h '+Math.floor((s.duration%3600)/60)+'m':s.timer}</strong></span>
       <span style="font-size:12px;color:var(--muted);">Date: <strong style="color:var(--text)">${s.calDate}</strong></span>
       <span style="font-size:12px;color:var(--muted);">Tension: <strong style="color:var(--text)">${s.tension}</strong></span>
     </div>
@@ -6520,7 +6796,33 @@ let CTABLES=[];
 function saveCT(){const name=$('ct-name').value.trim();const raw=$('ct-entries').value.trim();if(!name||!raw){alert('Add a name and at least one entry.');return;}const entries=raw.split('\n').map(s=>s.trim()).filter(Boolean);if(!entries.length)return;CTABLES.push({id:Date.now(),name,entries});$('ct-name').value='';$('ct-entries').value='';renderCT();persist();}
 function rollCT(id){const tb=CTABLES.find(x=>x.id===id);if(tb)$('ctr-'+id).textContent=pick(tb.entries);}
 function rmCT(id){CTABLES=CTABLES.filter(x=>x.id!==id);renderCT();persist();}
-function renderCT(){const c=$('ct-saved');if(!CTABLES.length){c.innerHTML='';return;}c.innerHTML=CTABLES.map(tb=>`<div class="scard" style="margin-top:10px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-family:'Cinzel',serif;font-size:12px;color:var(--gold);">${eh(tb.name)}</span><div style="display:flex;gap:6px;"><span style="font-size:12px;color:var(--dim);">${tb.entries.length} entries</span><button class="xbtn" onclick="rmCT(${tb.id})">&#215;</button></div></div><div class="rtbig" id="ctr-${tb.id}">—</div><button class="gbtn" onclick="rollCT(${tb.id})" style="width:100%;margin-top:8px;">Roll</button></div>`).join('');}
+function editCT(id){
+  const tb=CTABLES.find(x=>x.id===id);if(!tb)return;
+  const card=document.getElementById('ct-card-'+id);if(!card)return;
+  const orig=card.innerHTML;
+  card.innerHTML=
+    '<div class="slabel" style="margin-bottom:6px;">Edit: '+eh(tb.name)+'</div>'
+    +'<input class="sin" id="ct-edit-name-'+id+'" value="'+eh(tb.name)+'" placeholder="Table name" style="margin-bottom:6px;width:100%;">'
+    +'<textarea class="sin" id="ct-edit-entries-'+id+'" style="width:100%;min-height:100px;resize:vertical;margin-bottom:8px;">'+eh(tb.entries.join('\n'))+'</textarea>'
+    +'<div style="display:flex;gap:8px;">'
+    +'<button class="gbtn" onclick="saveEditCT('+id+')" style="flex:1;">Save</button>'
+    +'<button class="clr-btn" onclick="renderCT()" style="flex:1;">Cancel</button>'
+    +'</div>';
+  document.getElementById('ct-edit-name-'+id)?.focus();
+}
+function saveEditCT(id){
+  const tb=CTABLES.find(x=>x.id===id);if(!tb)return;
+  const name=(document.getElementById('ct-edit-name-'+id)?.value||'').trim();
+  const raw=(document.getElementById('ct-edit-entries-'+id)?.value||'').trim();
+  if(!name||!raw){showToast('Name and entries required');return;}
+  tb.name=name;
+  tb.entries=raw.split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  persist();renderCT();showToast('Table saved');
+}
+window.editCT=editCT;
+window.saveEditCT=saveEditCT;
+
+function renderCT(){const c=$('ct-saved');if(!CTABLES.length){c.innerHTML='';return;}c.innerHTML=CTABLES.map(tb=>`<div class="scard" style="margin-top:10px;" id="ct-card-${tb.id}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-family:'Cinzel',serif;font-size:12px;color:var(--gold);">${eh(tb.name)}</span><div style="display:flex;gap:6px;align-items:center;"><span style="font-size:12px;color:var(--dim);">${tb.entries.length} entries</span><button class="ebtn" onclick="editCT(${tb.id})" title="Edit table">✎</button><button class="xbtn" onclick="rmCT(${tb.id})">&#215;</button></div></div><div class="rtbig" id="ctr-${tb.id}">—</div><button class="gbtn" onclick="rollCT(${tb.id})" style="width:100%;margin-top:8px;">Roll</button></div>`).join('');}
 
 /* ── TAB ── */
 /* ── DICE ROLLER ── */
@@ -7339,7 +7641,7 @@ function initCollapsible() {
   });
 
   // Inject Collapse All / Expand All toolbar into each tab
-  ['party','party','session','generator','saved','tools','settings'].forEach(tabId => {
+  ['party','session','combat','generator','settings'].forEach(tabId => {
     const tab = document.getElementById('tab-' + tabId);
     if (!tab || tab.querySelector('.coll-toolbar')) return;
     const toolbar = document.createElement('div');
@@ -7486,6 +7788,7 @@ function updatePC(id, field, val) {
     if (field === 'name' || field === 'cls' || field === 'sub' || field === 'level') syncPartyFromPCs();
     if (['cls','clsCustom','sub','subCustom','race','raceCustom','level'].indexOf(field)>=0) _updatePCMeta(id);
     if (field === 'level' || field === 'cls') renderPCs();
+    if (field === 'hp') _refreshPCHpBar(id);
   }
 }
 
@@ -7710,6 +8013,7 @@ function renderPCs() {
             }
           </div>
         </div>
+        <div class="pc-hp-bar-wrap" title="HP"><div class="pc-hp-bar" id="pc-hp-bar-${id}" style="width:${(function(){var p=_pcHpPct(pc.hp);return p<0?'0':Math.round(p*100)+'%';})()};background:${(function(){var p=_pcHpPct(pc.hp);return p<0?'transparent':_pcHpColor(p);})()};opacity:${_pcHpPct(pc.hp)<0?0:1};"></div></div>
         <div class="pc-status-row">
           <div style="display:flex;flex-direction:column;gap:3px;">
             <div style="display:flex;align-items:center;gap:6px;">
@@ -7755,6 +8059,11 @@ function renderPCs() {
           <span class="pc-field-label">Notes</span>
           <textarea class="pc-field-input pc-notes" id="pc-notes-${id}" placeholder="Jot anything mid-session…"
             oninput="updatePC(${id},'notes',this.value)">${eh(pc.notes||'')}</textarea>
+        </div>
+
+        <div class="rest-btn-row">
+          <button class="rest-btn short-rest" onclick="shortRest()" title="Restore Pact Slots, Superiority Dice &amp; Ki">Short Rest</button>
+          <button class="rest-btn long-rest" onclick="longRest()" title="Restore all HP, spell slots &amp; resources">Long Rest</button>
         </div>
 
       </div>
@@ -7846,10 +8155,7 @@ function setTextSize(level){
   document.querySelectorAll('.text-size-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.size)===level));
   persist();
 }
-function sw(tab){
-  ['party','session','generator','saved','tools','settings'].forEach(id=>{const e=$('tab-'+id);if(e)e.style.display=id===tab?'':'none';});
-  document.querySelectorAll('.nav-tab').forEach((el,i)=>el.classList.toggle('active',['party','session','generator','saved','tools','settings'][i]===tab));
-}
+
 // Expose critical globals for Tauri WebKit inline handlers
 window.toggleQNotes=toggleQNotes;
 window.saveQNotes=saveQNotes;
@@ -8934,6 +9240,688 @@ window.resetCbtRound=resetCbtRound;
 window.addDuration=addDuration;
 window.removeDuration=removeDuration;
 
+/* ── CAMPAIGN EXPORT / IMPORT ── */
+function exportCampaign(){
+  const name=_activeCampaign||'Default';
+  const data={_type:'dnd-campaign',_version:1,_campaign:name,_exported:new Date().toISOString()};
+  _CMP_KEYS.forEach(function(k){
+    const v=localStorage.getItem(k);
+    if(v!==null)data[k]=v;
+  });
+  data['dnd_custom_spells']=localStorage.getItem('dnd_custom_spells')||'[]';
+  data['dnd_spell_overrides']=localStorage.getItem('dnd_spell_overrides')||'{}';
+  data['dnd_session0']=localStorage.getItem('dnd_session0')||'{}';
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=(name.replace(/[^a-zA-Z0-9_-]/g,'_')||'campaign')+'.dndcampaign.json';a.click();
+  showToast('Campaign exported');
+}
+function importCampaign(){document.getElementById('import-campaign-file').click();}
+function _handleCampaignImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data._type!=='dnd-campaign'){showToast('Not a campaign file');return;}
+      const name=data._campaign||'Imported';
+      persist();
+      // Save current campaign, then load imported data as new campaign
+      if(name!==_activeCampaign){
+        _CMP_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!==null)localStorage.setItem(_cmpKey(k,_activeCampaign),v);});
+      }
+      _CMP_KEYS.forEach(function(k){if(data[k]!==undefined)localStorage.setItem(k,data[k]);});
+      if(data['dnd_custom_spells'])localStorage.setItem('dnd_custom_spells',data['dnd_custom_spells']);
+      if(data['dnd_spell_overrides'])localStorage.setItem('dnd_spell_overrides',data['dnd_spell_overrides']);
+      if(data['dnd_session0'])localStorage.setItem('dnd_session0',data['dnd_session0']);
+      _activeCampaign=name;
+      localStorage.setItem('dnd_active_campaign',name);
+      PCS=[];RES=[];DS=[];CONDS=[];SESSIONS=[];PARTY_SAVES=[];ROSTER=[];CBT=[];
+      SPOTLIGHT=[];RUMOURS=[];INITIATIVE=[];PC_SPELLS={};
+      loadPersisted();loadRumours();loadCustomSpells();loadSpellOverrides();
+      loadPCs();syncPartyFromPCs();renderCampaignUI();renderSessions();renderRoster();renderCbt();
+      renderDs();renderCond();renderPartySaves();renderSpellLookup();
+      showToast('Campaign "'+name+'" imported');
+    }catch(err){showToast('Import failed: '+err.message);}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+window.exportCampaign=exportCampaign;
+window.importCampaign=importCampaign;
+window._handleCampaignImport=_handleCampaignImport;
+
+/* ── PC EXPORT / IMPORT ── */
+function exportPCs(){
+  const data={_type:'dnd-pcs',_version:1,_campaign:_activeCampaign||'Default',_exported:new Date().toISOString(),pcs:PCS,spells:PC_SPELLS};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='party_'+((_activeCampaign||'party').replace(/[^a-zA-Z0-9_-]/g,'_'))+'.dndpcs.json';a.click();
+  showToast('Party exported');
+}
+function importPCs(){document.getElementById('import-pcs-file').click();}
+function _handlePCsImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data._type!=='dnd-pcs'||!Array.isArray(data.pcs)){showToast('Not a party file');return;}
+      // Ask: replace or merge?
+      if(PCS.length&&!confirm('Replace current party? Click Cancel to merge instead.')){
+        // Merge: add PCs with new IDs if name conflicts
+        data.pcs.forEach(function(pc){
+          const existing=PCS.find(function(p){return p.name===pc.name;});
+          if(!existing){pc.id=Date.now()+Math.random();PCS.push(pc);}
+        });
+      } else {
+        PCS=data.pcs;
+        if(data.spells)PC_SPELLS=data.spells;
+      }
+      persistPCs();persistSpells();renderPCs();syncPartyFromPCs();
+      showToast(data.pcs.length+' characters imported');
+    }catch(err){showToast('Import failed: '+err.message);}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+window.exportPCs=exportPCs;
+window.importPCs=importPCs;
+window._handlePCsImport=_handlePCsImport;
+
+/* ── SPELL EXPORT / IMPORT ── */
+function exportSpells(){
+  const data={_type:'dnd-spells',_version:1,_exported:new Date().toISOString(),custom:CUSTOM_SPELLS,overrides:SPELL_OVERRIDES};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='spells_'+new Date().toISOString().slice(0,10)+'.dndspells.json';a.click();
+  showToast('Spells exported');
+}
+function importSpells(){document.getElementById('import-spells-file').click();}
+function _handleSpellsImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data._type!=='dnd-spells'){showToast('Not a spells file');return;}
+      var added=0,updated=0;
+      if(Array.isArray(data.custom)){
+        data.custom.forEach(function(s){
+          const idx=CUSTOM_SPELLS.findIndex(function(x){return x.n===s.n;});
+          if(idx>=0){CUSTOM_SPELLS[idx]=s;updated++;}
+          else{CUSTOM_SPELLS.push(s);added++;}
+        });
+        saveCustomSpells();
+      }
+      if(data.overrides&&typeof data.overrides==='object'){
+        Object.assign(SPELL_OVERRIDES,data.overrides);
+        saveSpellOverrides();
+      }
+      renderSpellLookup();
+      showToast(added+' added, '+updated+' updated');
+    }catch(err){showToast('Import failed: '+err.message);}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+window.exportSpells=exportSpells;
+window.importSpells=importSpells;
+window._handleSpellsImport=_handleSpellsImport;
+
+/* ── LOCKED GENERATOR FIELDS ── */
+function toggleLock(id){
+  const el=document.getElementById(id);if(!el)return;
+  const locked=el.dataset.locked==='1';
+  el.dataset.locked=locked?'0':'1';
+  const btn=document.querySelector('.gen-lock-btn[data-lockfor="'+id+'"]');
+  if(btn){
+    btn.classList.toggle('locked',!locked);
+    btn.textContent=locked?'\u25CB':'\u25CF'; // ○ unlocked vs ● locked
+    btn.title=locked?'Lock this result':'Unlock this result';
+  }
+}
+function _injectLockButtons(){
+  ['tab-generator','tab-combat'].forEach(function(tabId){
+    var gen=document.getElementById(tabId);if(!gen)return;
+    gen.querySelectorAll('[id^="r-"]').forEach(function(el){
+      if(el.tagName!=='DIV')return;
+      if(!el.classList.contains('rm')&&!el.classList.contains('rs'))return;
+      if(el.parentElement.querySelector('.gen-lock-btn[data-lockfor="'+el.id+'"]'))return;
+      var btn=document.createElement('button');
+      btn.className='gen-lock-btn';
+      btn.dataset.lockfor=el.id;
+      btn.title='Lock this result';
+      btn.textContent='\u25CB'; // ○ unlocked
+      btn.onclick=function(e){e.stopPropagation();toggleLock(el.id);};
+      el.parentElement.insertBefore(btn,el.nextSibling);
+    });
+  });
+}
+window.toggleLock=toggleLock;
+window._injectLockButtons=_injectLockButtons;
+
+/* ── BESTIARY ── */
+const BESTIARY=[
+{n:"Bandit",cr:"1/8",type:"Humanoid",hp:11,ac:12,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Pack Tactics: advantage on attacks if ally adjacent.",
+ actions:"Scimitar +3 1d6+1 slash. Crossbow +3 1d8+1 pierce 80/320 ft."},
+{n:"Bandit Captain",cr:"2",type:"Humanoid",hp:65,ac:15,speed:"30 ft",
+ dmg_imm:[],dmg_res:["bludgeoning","piercing","slashing (nonmagical)"],cond_imm:[],leg:0,
+ traits:"",
+ actions:"Multiattack: 3 melee. Scimitar +5 1d6+3. Dagger +5 1d4+3."},
+{n:"Berserker",cr:"2",type:"Humanoid",hp:67,ac:13,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Reckless: advantage on attacks, enemies gain advantage vs it.",
+ actions:"Greataxe +5 1d12+3 slash."},
+{n:"Black Dragon (Young)",cr:"7",type:"Dragon",hp:127,ac:18,speed:"40 ft, fly 80 ft, swim 40 ft",
+ dmg_imm:["acid"],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Amphibious. Blindsight 30 ft, darkvision 120 ft.",
+ actions:"Multiattack: 3. Bite +7 2d10+4 pierce +2d8 acid. Claw +7 2d6+4. Acid Breath (recharge 5-6) 30-ft line, DC 14 Con, 11d8 acid."},
+{n:"Blue Dragon (Young)",cr:"9",type:"Dragon",hp:152,ac:18,speed:"40 ft, burrow 20 ft, fly 80 ft",
+ dmg_imm:["lightning"],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Blindsight 30 ft, darkvision 120 ft.",
+ actions:"Multiattack: 3. Bite +8 2d10+5 pierce +1d10 lightning. Claw +8 2d6+5. Lightning Breath (recharge 5-6) 60-ft line, DC 16 Dex, 10d10 lightning."},
+{n:"Cultist",cr:"1/8",type:"Humanoid",hp:9,ac:12,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Dark Devotion: advantage on saving throws vs charm and fright.",
+ actions:"Scimitar +3 1d6+1 slash."},
+{n:"Cult Fanatic",cr:"2",type:"Humanoid",hp:33,ac:13,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Dark Devotion. Spellcasting DC 12: Blindness/Deafness, Command, Inflict Wounds, Hold Person.",
+ actions:"Multiattack: 2. Dagger +4 1d4+2 pierce."},
+{n:"Death Knight",cr:"17",type:"Undead",hp:180,ac:20,speed:"30 ft",
+ dmg_imm:["necrotic","poison"],dmg_res:["bludgeoning","piercing","slashing (nonmagical)"],cond_imm:["exhaustion","frightened","poisoned"],leg:3,
+ traits:"Magic Resistance. Spellcasting DC 18: Animate Dead, Dispel Magic, Hold Person, Thunderwave. Rejuvenation: returns in 1d10 days unless atonement made.",
+ actions:"Multiattack: 3. Longsword +11 1d8+5 slash +3d8 necrotic. Hellfire Orb (1/day) 20-ft radius, DC 18 Dex, 10d10 fire + 10d10 necrotic. Parry reaction +6 AC."},
+{n:"Doppelganger",cr:"3",type:"Monstrosity",hp:52,ac:14,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:["charmed"],leg:0,
+ traits:"Shapechanger. Ambusher. Surprise attack: +3d6 damage on first hit. Read Thoughts DC 13 Wis.",
+ actions:"Multiattack: 2. Slam +6 1d6+3 bludgeon."},
+{n:"Flesh Golem",cr:"5",type:"Construct",hp:93,ac:9,speed:"30 ft",
+ dmg_imm:["lightning","poison","bludgeoning/piercing/slashing (nonmagical)"],dmg_res:[],
+ cond_imm:["charmed","exhaustion","frightened","paralyzed","petrified","poisoned"],leg:0,
+ traits:"Berserk (triggers at 40 HP or less, attacks nearest). Aversion of Fire. Immutable Form. Lightning Absorption: regains HP from lightning.",
+ actions:"Multiattack: 2. Slam +7 2d8+4 bludgeon."},
+{n:"Ghost",cr:"4",type:"Undead",hp:45,ac:11,speed:"0 ft, fly 40 ft (hover)",
+ dmg_imm:["cold","necrotic","poison"],dmg_res:["acid","fire","lightning","thunder","bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","frightened","grappled","paralyzed","petrified","poisoned","prone","restrained"],leg:0,
+ traits:"Ethereal Sight. Incorporeal Movement. Horrifying Visage DC 13 Wis or frightened 1 min + aged 1d4×10 years.",
+ actions:"Withering Touch +5 4d6+3 necrotic. Etherealness. Possession DC 13 Cha or possessed."},
+{n:"Giant Spider",cr:"1",type:"Beast",hp:26,ac:14,speed:"30 ft, climb 30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Spider Climb. Web Walker. Web Sense.",
+ actions:"Bite +5 1d8+3 pierce + DC 11 Con or 2d8 poison. Web (recharge 5-6) DC 12 Dex or restrained."},
+{n:"Goblin",cr:"1/4",type:"Humanoid",hp:7,ac:15,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Nimble Escape: Disengage or Hide as bonus action.",
+ actions:"Scimitar +4 1d6+2 slash. Shortbow +4 1d6+2 pierce 80/320 ft."},
+{n:"Goblin Boss",cr:"1",type:"Humanoid",hp:21,ac:17,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Nimble Escape. Redirect Attack: use reaction to redirect a hit to an adjacent goblin.",
+ actions:"Multiattack: 2. Scimitar +4 1d6+2. Javelin +2 1d6 20/60 ft."},
+{n:"Green Hag",cr:"3",type:"Fey",hp:82,ac:17,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Amphibious. Mimicry. Innate Spellcasting: Dancing Lights, Minor Illusion, Vicious Mockery (at will). Weakness Hex DC 12 Con or disadvantage on attacks.",
+ actions:"Claws +5 2d6+3 slash. Illusory Appearance. Invisible Passage."},
+{n:"Guard",cr:"1/8",type:"Humanoid",hp:11,ac:16,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"",
+ actions:"Spear +3 1d6+1 pierce, or 1d8+1 two-handed."},
+{n:"Hill Giant",cr:"5",type:"Giant",hp:105,ac:13,speed:"40 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"",
+ actions:"Multiattack: 2. Greatclub +8 3d8+5 bludgeon. Rock +8 3d10+5 bludgeon 60/240 ft."},
+{n:"Hobgoblin",cr:"1/2",type:"Humanoid",hp:11,ac:18,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Martial Advantage: +2d6 on attack if ally adjacent.",
+ actions:"Longsword +3 1d8+1 slash. Longbow +3 1d8+1 pierce 150/600 ft."},
+{n:"Kobold",cr:"1/8",type:"Humanoid",hp:5,ac:12,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Pack Tactics. Sunlight Sensitivity.",
+ actions:"Dagger +4 1d4+2 pierce. Sling +4 1d4+2 bludgeon 30/120 ft."},
+{n:"Lich",cr:"21",type:"Undead",hp:135,ac:17,speed:"30 ft",
+ dmg_imm:["cold","lightning","necrotic","poison"],
+ dmg_res:["bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","frightened","paralyzed","poisoned"],leg:3,
+ traits:"Legendary Resistance 3/day. Magic Resistance. Turn Resistance. Rejuvenation (phylactery). Spellcasting DC 20: Finger of Death, Power Word Kill, Disintegrate, Dominate Monster.",
+ actions:"Paralyzing Touch +12 3d6 cold + DC 18 Con or paralyzed. Lair actions on init 20. Legendary: Cantrip / Paralyze (DC 18) / Frightening Gaze (DC 18)."},
+{n:"Merrow",cr:"2",type:"Monstrosity",hp:45,ac:13,speed:"10 ft, swim 40 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Amphibious.",
+ actions:"Multiattack: 2. Claws +5 2d6+3 slash. Harpoon +5 2d6+3 pierce, pull 20 ft DC 14 Str."},
+{n:"Mimic",cr:"2",type:"Monstrosity",hp:58,ac:12,speed:"15 ft",
+ dmg_imm:["acid"],dmg_res:[],cond_imm:["prone"],leg:0,
+ traits:"Shapechanger. Adhesive (object form) grapple DC 13 Str. False Appearance. Grappler.",
+ actions:"Pseudopod +5 1d8+3 bludgeon + adhesive grapple. Bite +5 1d8+3 pierce +1d8 acid."},
+{n:"Minotaur",cr:"3",type:"Monstrosity",hp:114,ac:14,speed:"40 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Charge: Gore +6 2d8+4 pierce + DC 14 Str push 10 ft + prone. Labyrinthine Recall. Reckless.",
+ actions:"Greataxe +6 2d12+4 slash. Gore +6 2d8+4 pierce."},
+{n:"Night Hag",cr:"5",type:"Fiend",hp:112,ac:17,speed:"30 ft",
+ dmg_imm:["cold","fire","bludgeoning/piercing/slashing (nonmagical/non-silvered)"],dmg_res:[],cond_imm:["charmed"],leg:0,
+ traits:"Magic Resistance. Innate Spellcasting: Detect Magic, Magic Missile, Plane Shift, Sleep. Nightmare Haunting (exhaustion).",
+ actions:"Claws +7 2d8+4 slash (ethereal plane). Change Shape. Etherealness."},
+{n:"Ogre",cr:"2",type:"Giant",hp:59,ac:11,speed:"40 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"",
+ actions:"Greatclub +6 2d8+4 bludgeon. Javelin +6 2d6+4 pierce 30/120 ft."},
+{n:"Orc",cr:"1/2",type:"Humanoid",hp:15,ac:13,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Aggressive: bonus action move toward enemy.",
+ actions:"Greataxe +5 1d12+3 slash. Javelin +5 1d6+3 pierce 30/120 ft."},
+{n:"Orc War Chief",cr:"4",type:"Humanoid",hp:93,ac:16,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Aggressive. Gruumsh's Fury: +1d8 damage. Inspire Rampage (bonus action) ally takes bonus attack.",
+ actions:"Multiattack: 3. Greataxe +7 1d12+5. Javelin +7 2d6+5."},
+{n:"Phase Spider",cr:"3",type:"Monstrosity",hp:32,ac:13,speed:"30 ft, climb 30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Ethereal Jaunt: bonus action to shift Ethereal ↔ Material. Spider Climb. Web Walker.",
+ actions:"Bite +5 1d10+3 pierce + DC 11 Con or 4d8 poison, half on save."},
+{n:"Roper",cr:"5",type:"Monstrosity",hp:93,ac:20,speed:"10 ft, climb 10 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:["exhaustion","prone"],leg:0,
+ traits:"False Appearance (stalactite). Spider Climb. Grasping Tendrils 6x: +7 to hit, 50 ft, grapple + restrained (DC 15 Str), can sever with 10 slashing damage.",
+ actions:"Multiattack: 4 tendrils + 1 bite. Bite +7 4d8+4 pierce."},
+{n:"Shadow",cr:"1/2",type:"Undead",hp:16,ac:12,speed:"40 ft",
+ dmg_imm:["necrotic","poison"],
+ dmg_res:["acid","cold","fire","lightning","thunder","bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["exhaustion","frightened","grappled","paralyzed","petrified","poisoned","prone","restrained"],leg:0,
+ traits:"Amorphous. Shadow Stealth: Hide as bonus action in dim/dark light. Sunlight Weakness.",
+ actions:"Strength Drain +4 2d6+2 necrotic, Str −1d4. If 0 Str, dies → new shadow."},
+{n:"Skeleton",cr:"1/4",type:"Undead",hp:13,ac:13,speed:"30 ft",
+ dmg_imm:["poison"],dmg_res:["bludgeoning"],cond_imm:["exhaustion","poisoned"],leg:0,
+ traits:"",
+ actions:"Shortsword +4 1d6+2 pierce. Shortbow +4 1d6+2 pierce 80/320 ft."},
+{n:"Specter",cr:"1",type:"Undead",hp:22,ac:12,speed:"0 ft, fly 50 ft (hover)",
+ dmg_imm:["necrotic","poison"],
+ dmg_res:["acid","cold","fire","lightning","thunder","bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","grappled","paralyzed","petrified","poisoned","prone","restrained","unconscious"],leg:0,
+ traits:"Incorporeal Movement. Sunlight Sensitivity. Unending Hatred: advantage vs living.",
+ actions:"Life Drain +4 3d6 necrotic, DC 10 Con or max HP reduced by damage amount."},
+{n:"Stone Golem",cr:"10",type:"Construct",hp:178,ac:17,speed:"30 ft",
+ dmg_imm:["poison","psychic","bludgeoning/piercing/slashing (nonmagical)"],dmg_res:[],
+ cond_imm:["charmed","exhaustion","frightened","paralyzed","petrified","poisoned"],leg:0,
+ traits:"Immutable Form. Magic Resistance. Magic Weapons. Slow (recharge 5-6) DC 17 Wis or speed halved, no reactions, one action only.",
+ actions:"Multiattack: 2. Slam +10 3d10+6 bludgeon."},
+{n:"Troll",cr:"5",type:"Giant",hp:84,ac:15,speed:"30 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Keen Smell. Regeneration: regain 10 HP/turn unless hit by acid or fire. Dies if 0 HP with no regeneration.",
+ actions:"Multiattack: 3. Bite +7 1d6+4 pierce. Claw +7 2d6+4 slash."},
+{n:"Vampire",cr:"13",type:"Undead",hp:144,ac:16,speed:"30 ft",
+ dmg_imm:["necrotic"],
+ dmg_res:["bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","frightened","paralyzed","petrified","poisoned","prone"],leg:3,
+ traits:"Legendary Resistance 3/day. Misty Escape (gaseous form at 0 HP). Regeneration 20 HP/turn (blocked by radiant/running water). Spider Climb. Vampire Weaknesses.",
+ actions:"Multiattack: 2. Unarmed +9 1d8+4 bludgeon. Bite +9 1d6+4 pierce +3d6 necrotic, max HP reduced by necrotic dealt. Charm DC 17 Wis. Children of Night (bonus). Legendary: Move / Unarmed / Bite."},
+{n:"Vampire Spawn",cr:"5",type:"Undead",hp:82,ac:15,speed:"30 ft",
+ dmg_imm:["necrotic"],
+ dmg_res:["bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","frightened","paralyzed","petrified","poisoned","prone"],leg:0,
+ traits:"Regeneration 10 HP/turn (blocked by radiant/running water). Spider Climb. Vampire Weaknesses: sunlight/running water 20 radiant/turn.",
+ actions:"Claws +6 2d4+4 slash. Bite +6 1d6+4 pierce +2d6 necrotic, max HP reduced."},
+{n:"Wight",cr:"3",type:"Undead",hp:45,ac:14,speed:"30 ft",
+ dmg_imm:["necrotic","poison"],
+ dmg_res:["bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["exhaustion","poisoned"],leg:0,
+ traits:"Sunlight Sensitivity. Life Drain: on hit, DC 13 Con or max HP reduced by necrotic dealt. Raised as zombie if killed.",
+ actions:"Multiattack: 2. Longsword +4 1d8+2 slash. Longbow +4 1d8+2 pierce 150/600 ft."},
+{n:"Will-o'-Wisp",cr:"2",type:"Undead",hp:22,ac:19,speed:"0 ft, fly 50 ft (hover)",
+ dmg_imm:["lightning","poison"],
+ dmg_res:["acid","cold","fire","necrotic","thunder","bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["exhaustion","grappled","paralyzed","poisoned","prone","restrained","unconscious"],leg:0,
+ traits:"Consume Life: bonus action on nearby dying creature, regain 10d6 HP. Ephemeral (no item interaction). Incorporeal. Variable Illumination.",
+ actions:"Shock +4 2d8 lightning. Invisibility."},
+{n:"Wolf",cr:"1/4",type:"Beast",hp:11,ac:13,speed:"40 ft",
+ dmg_imm:[],dmg_res:[],cond_imm:[],leg:0,
+ traits:"Pack Tactics. Keen Hearing and Smell.",
+ actions:"Bite +4 2d4+2 pierce + DC 11 Str or knocked prone."},
+{n:"Wraith",cr:"5",type:"Undead",hp:67,ac:13,speed:"0 ft, fly 60 ft (hover)",
+ dmg_imm:["necrotic","poison"],
+ dmg_res:["acid","cold","fire","lightning","thunder","bludgeoning/piercing/slashing (nonmagical)"],
+ cond_imm:["charmed","exhaustion","grappled","paralyzed","petrified","poisoned","prone","restrained"],leg:0,
+ traits:"Incorporeal Movement. Sunlight Sensitivity. Create Specter: slain humanoid becomes specter under wraith's control.",
+ actions:"Life Drain +6 4d8+4 necrotic, DC 14 Con or max HP reduced by damage. Corrupting Touch +6 4d8+4 (ethereal plane only)."},
+{n:"Zombie",cr:"1/4",type:"Undead",hp:22,ac:8,speed:"20 ft",
+ dmg_imm:["poison"],dmg_res:[],cond_imm:["poisoned"],leg:0,
+ traits:"Undead Fortitude: on lethal damage, DC 5+damage Con save to drop to 1 HP instead.",
+ actions:"Slam +3 1d6+1 bludgeon."},
+];
+/* ── BESTIARY OVERRIDES / CUSTOM ── */
+let BESTIARY_OVERRIDES={};
+let CUSTOM_CREATURES=[];
+
+function loadBestiary(){
+  try{const d=localStorage.getItem('dnd_bestiary_overrides');if(d)BESTIARY_OVERRIDES=JSON.parse(d);}catch(e){}
+  try{const d=localStorage.getItem('dnd_custom_creatures');if(d)CUSTOM_CREATURES=JSON.parse(d);}catch(e){}
+}
+function saveBestiaryOverrides(){localStorage.setItem('dnd_bestiary_overrides',JSON.stringify(BESTIARY_OVERRIDES));}
+function saveCustomCreatures(){localStorage.setItem('dnd_custom_creatures',JSON.stringify(CUSTOM_CREATURES));}
+function _allCreatures(){
+  return [...BESTIARY,...CUSTOM_CREATURES];
+}
+function _getCreature(name){
+  const base=_allCreatures().find(c=>c.n===name);
+  if(!base)return null;
+  return BESTIARY_OVERRIDES[name]?Object.assign({},base,BESTIARY_OVERRIDES[name]):base;
+}
+
+let _bQuery='', _bType='', _bCr='';
+const CR_ORDER=['0','1/8','1/4','1/2','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'];
+function crVal(cr){const i=CR_ORDER.indexOf(String(cr));return i>=0?i:99;}
+
+
+function _crNameFrom(el){
+  const card=el.closest?el.closest('[data-cr-name]'):null;
+  return card?card.dataset.crName:'';
+}
+function renderBestiary(){
+  const c=document.getElementById('bestiary-results');if(!c)return;
+  let list=_allCreatures();
+  const q=_bQuery.toLowerCase().trim();
+  if(q)list=list.filter(m=>m.n.toLowerCase().includes(q)||m.type.toLowerCase().includes(q)||m.traits.toLowerCase().includes(q)||m.actions.toLowerCase().includes(q));
+  if(_bType)list=list.filter(m=>m.type.toLowerCase()===_bType.toLowerCase());
+  if(_bCr!=='')list=list.filter(m=>String(m.cr)===_bCr);
+  list=list.slice().sort(function(a,b){return crVal(a.cr)-crVal(b.cr)||a.n.localeCompare(b.n);});
+  if(!list.length){c.innerHTML='<div style="color:var(--dim);font-style:italic;padding:8px 0;">No creatures match.</div>';return;}
+  c.innerHTML=list.map(function(base){
+    const m=_getCreature(base.n)||base;
+    const isCustom=!!base.custom;
+    const isEdited=!!BESTIARY_OVERRIDES[m.n];
+    const dmgImmStr=m.dmg_imm.length?'<span class="cr-tag cr-imm">Imm: '+m.dmg_imm.join(', ')+'</span>':'';
+    const dmgResStr=m.dmg_res.length?'<span class="cr-tag cr-res">Res: '+m.dmg_res.join(', ')+'</span>':'';
+    const condImmStr=m.cond_imm.length?'<span class="cr-tag cr-cimm">Cond Imm: '+m.cond_imm.join(', ')+'</span>':'';
+    const legStr=m.leg>0?'<span class="cr-tag cr-leg">Leg ×'+m.leg+'</span>':'';
+    return '<div class="cr-card'+(isCustom?' cr-card-custom':isEdited?' cr-card-edited':'')+'" data-cr-name="'+m.n.replace(/"/g,'&quot;').replace(/'/g,'&#39;')+'">'
+      +'<div class="cr-header">'
+      +'<div class="cr-name-row">'
+      +'<span class="cr-name">'+eh(m.n)+(isCustom?'<span class="cr-badge-custom" title="Custom">✦</span>':isEdited?'<span class="cr-badge-edited" title="Modified">✎</span>':'')+'</span>'
+      +'<span class="cr-meta">CR '+m.cr+' · '+m.type+'</span>'
+      +'</div>'
+      +'<div style="display:flex;gap:5px;align-items:center;">'
+      +(isCustom
+        ?'<button class="spell-edit-btn" onclick="editCreature(_crNameFrom(this))" title="Edit">✎</button>'
+        +'<button class="spell-edit-btn" style="color:var(--red);border-color:var(--red);" onclick="deleteCustomCreature(_crNameFrom(this))" title="Delete">✕</button>'
+        :'<button class="spell-edit-btn" onclick="editCreature(_crNameFrom(this))" title="Edit">✎</button>')
+      +'<button class="spell-edit-btn cr-send-btn" onclick="sendToCombat(_crNameFrom(this))" title="Add to combat tracker">⚔</button>'
+      +'</div>'
+      +'</div>'
+      +'<div class="cr-vitals">'
+      +'<span><b>HP</b> '+m.hp+'</span>'
+      +'<span><b>AC</b> '+m.ac+'</span>'
+      +'<span><b>Speed</b> '+m.speed+'</span>'
+      +(m.leg>0?'<span style="color:var(--gd);font-family:Cinzel,serif;font-size:10px;">Legendary</span>':'')
+      +'</div>'
+      +(dmgImmStr||dmgResStr||condImmStr||legStr?'<div class="cr-tags">'+legStr+dmgImmStr+dmgResStr+condImmStr+'</div>':'')
+      +(m.traits?'<div class="cr-section"><span class="cr-sec-label">Traits</span> '+eh(m.traits)+'</div>':'')
+      +'<div class="cr-section"><span class="cr-sec-label">Actions</span> '+eh(m.actions)+'</div>'
+      +'</div>';
+  }).join('');
+}
+function bSearch(v){_bQuery=v;renderBestiary();}
+function bFilterType(v){_bType=v;renderBestiary();}
+function bFilterCr(v){_bCr=v;renderBestiary();}
+
+function sendToCombat(name){
+  const m=_getCreature(name);if(!m)return;
+  CBT.push({name:m.n,hp:m.hp,maxHp:m.hp,ord:0,id:Date.now(),dead:false,conds:[]});
+  CBT.sort(function(a,b){return b.ord-a.ord;});
+  renderCbt();persist();
+  showToast(m.n+' added to combat tracker');
+}
+
+function showAddCreatureForm(){
+  const c=document.getElementById('bestiary-results');if(!c)return;
+  c.innerHTML='<div class="spell-edit-form" id="add-cr-form" style="border:1px solid var(--gd);border-radius:var(--rs);padding:14px;">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
+    +'<span style="font-family:Cinzel,serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gd);">Add Custom Creature</span>'
+    +'<button class="clr-btn" onclick="renderBestiary()" style="font-size:10px;padding:2px 8px;">✕ Cancel</button>'
+    +'</div>'
+    +'<div class="spell-edit-row">'
+    +'<div class="spell-edit-field" style="flex:2;"><label class="spell-edit-label">Name</label><input class="sin" id="nc-name" placeholder="e.g. Shadow Drake"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">CR</label>'
+    +'<select class="ssel" id="nc-cr"><option value="0">0</option><option value="1/8">1/8</option><option value="1/4">1/4</option><option value="1/2">1/2</option>'
+    +CR_ORDER.slice(4).map(function(v){return'<option value="'+v+'">'+v+'</option>';}).join('')
+    +'</select></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">Type</label>'
+    +'<select class="ssel" id="nc-type"><option>Aberration</option><option>Beast</option><option>Celestial</option><option>Construct</option><option>Dragon</option><option>Elemental</option><option>Fey</option><option>Fiend</option><option>Giant</option><option>Humanoid</option><option>Monstrosity</option><option>Ooze</option><option>Plant</option><option>Undead</option></select></div>'
+    +'</div>'
+    +'<div class="spell-edit-row">'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">HP</label><input class="sin" id="nc-hp" type="number" min="1" value="10"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">AC</label><input class="sin" id="nc-ac" type="number" min="1" value="12"></div>'
+    +'<div class="spell-edit-field" style="flex:2;"><label class="spell-edit-label">Speed</label><input class="sin" id="nc-speed" value="30 ft"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">Legendary Actions</label><input class="sin" id="nc-leg" type="number" min="0" value="0"></div>'
+    +'</div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Damage Immunities (comma-separated)</label><input class="sin" id="nc-dimm" placeholder="fire, poison, bludgeoning…"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Damage Resistances</label><input class="sin" id="nc-dres" placeholder="cold, bludgeoning (nonmagical)…"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Condition Immunities</label><input class="sin" id="nc-cimm" placeholder="charmed, frightened, poisoned…"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Traits</label><textarea class="sin" id="nc-traits" style="min-height:60px;"></textarea></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Actions</label><textarea class="sin" id="nc-actions" style="min-height:60px;"></textarea></div>'
+    +'<div class="spell-edit-actions">'
+    +'<button class="tbtn" onclick="saveNewCreature()" style="padding:5px 16px;">✦ Add Creature</button>'
+    +'<button class="clr-btn" onclick="renderBestiary()" style="font-size:11px;padding:4px 10px;">Cancel</button>'
+    +'</div></div>';
+  document.getElementById('nc-name')?.focus();
+}
+
+function saveNewCreature(){
+  const name=(document.getElementById('nc-name')?.value||'').trim();
+  if(!name){showToast('Name required');return;}
+  if(_allCreatures().some(function(c){return c.n.toLowerCase()===name.toLowerCase();})){showToast('Creature already exists');return;}
+  const hp=parseInt(document.getElementById('nc-hp')?.value)||10;
+  CUSTOM_CREATURES.push({
+    n:name,cr:document.getElementById('nc-cr')?.value||'1',
+    type:document.getElementById('nc-type')?.value||'Humanoid',
+    hp:hp,maxHp:hp,ac:parseInt(document.getElementById('nc-ac')?.value)||12,
+    speed:(document.getElementById('nc-speed')?.value||'30 ft').trim(),
+    leg:parseInt(document.getElementById('nc-leg')?.value)||0,
+    dmg_imm:(document.getElementById('nc-dimm')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    dmg_res:(document.getElementById('nc-dres')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    cond_imm:(document.getElementById('nc-cimm')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    traits:(document.getElementById('nc-traits')?.value||'').trim(),
+    actions:(document.getElementById('nc-actions')?.value||'').trim(),
+    custom:true
+  });
+  saveCustomCreatures();renderBestiary();showToast('Creature added: '+name);
+}
+
+function editCreature(name){
+  const m=_getCreature(name);if(!m)return;
+  const isEdited=!!BESTIARY_OVERRIDES[name];
+  let card=null;
+  document.querySelectorAll('.cr-card[data-cr-name]').forEach(function(c){if(c.dataset.crName===name)card=c;});
+  if(!card)return;
+  card.dataset.editingCr=name;
+  const crOpts=CR_ORDER.map(function(v){return'<option value="'+v+'"'+(String(m.cr)===v?' selected':'')+'>'+v+'</option>';}).join('');
+  const typeOpts=['Aberration','Beast','Celestial','Construct','Dragon','Elemental','Fey','Fiend','Giant','Humanoid','Monstrosity','Ooze','Plant','Undead'].map(function(t){return'<option'+(m.type===t?' selected':'')+'>'+t+'</option>';}).join('');
+  card.innerHTML='<div class="spell-edit-form">'
+    +'<div class="spell-edit-row">'
+    +'<div class="spell-edit-field" style="flex:2;"><label class="spell-edit-label">Name</label><input class="sin" id="ec-name" value="'+eh(m.n)+'"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">CR</label><select class="ssel" id="ec-cr">'+crOpts+'</select></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">Type</label><select class="ssel" id="ec-type">'+typeOpts+'</select></div>'
+    +'</div>'
+    +'<div class="spell-edit-row">'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">HP</label><input class="sin" id="ec-hp" type="number" value="'+m.hp+'"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">AC</label><input class="sin" id="ec-ac" type="number" value="'+m.ac+'"></div>'
+    +'<div class="spell-edit-field" style="flex:2;"><label class="spell-edit-label">Speed</label><input class="sin" id="ec-speed" value="'+eh(m.speed)+'"></div>'
+    +'<div class="spell-edit-field"><label class="spell-edit-label">Leg Actions</label><input class="sin" id="ec-leg" type="number" value="'+m.leg+'"></div>'
+    +'</div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Damage Immunities</label><input class="sin" id="ec-dimm" value="'+eh(m.dmg_imm.join(', '))+'"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Damage Resistances</label><input class="sin" id="ec-dres" value="'+eh(m.dmg_res.join(', '))+'"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Condition Immunities</label><input class="sin" id="ec-cimm" value="'+eh(m.cond_imm.join(', '))+'"></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Traits</label><textarea class="sin" id="ec-traits" style="min-height:60px;">'+eh(m.traits)+'</textarea></div>'
+    +'<div class="spell-edit-field" style="width:100%;"><label class="spell-edit-label">Actions</label><textarea class="sin" id="ec-actions" style="min-height:60px;">'+eh(m.actions)+'</textarea></div>'
+    +'<div class="spell-edit-actions">'
+    +'<button class="tbtn" onclick="saveCreatureEdit()" style="padding:5px 14px;">Save</button>'
+    +(isEdited||m.custom?'<button class="clr-btn" onclick="resetCreatureEdit()" style="font-size:11px;padding:4px 10px;">Reset</button>':'')
+    +'<button class="clr-btn" onclick="renderBestiary()" style="font-size:11px;padding:4px 10px;">Cancel</button>'
+    +'</div></div>';
+}
+
+function saveCreatureEdit(){
+  const card=document.querySelector('.cr-card[data-editing-cr]');if(!card)return;
+  const originalName=card.dataset.editingCr;
+  const name=(document.getElementById('ec-name')?.value||'').trim();if(!name)return;
+  const hp=parseInt(document.getElementById('ec-hp')?.value)||10;
+  const edit={n:name,cr:document.getElementById('ec-cr')?.value,type:document.getElementById('ec-type')?.value,
+    hp:hp,ac:parseInt(document.getElementById('ec-ac')?.value)||12,speed:(document.getElementById('ec-speed')?.value||'30 ft').trim(),
+    leg:parseInt(document.getElementById('ec-leg')?.value)||0,
+    dmg_imm:(document.getElementById('ec-dimm')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    dmg_res:(document.getElementById('ec-dres')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    cond_imm:(document.getElementById('ec-cimm')?.value||'').split(',').map(function(s){return s.trim().toLowerCase();}).filter(Boolean),
+    traits:(document.getElementById('ec-traits')?.value||'').trim(),
+    actions:(document.getElementById('ec-actions')?.value||'').trim()};
+  const customIdx=CUSTOM_CREATURES.findIndex(function(c){return c.n===originalName;});
+  if(customIdx>=0){CUSTOM_CREATURES[customIdx]=Object.assign({},CUSTOM_CREATURES[customIdx],edit);saveCustomCreatures();}
+  else{if(name!==originalName)delete BESTIARY_OVERRIDES[originalName];BESTIARY_OVERRIDES[name]=edit;saveBestiaryOverrides();}
+  renderBestiary();showToast('Creature saved');
+}
+
+function resetCreatureEdit(){
+  const card=document.querySelector('.cr-card[data-editing-cr]');if(!card)return;
+  const name=card.dataset.editingCr;
+  delete BESTIARY_OVERRIDES[name];saveBestiaryOverrides();
+  const ci=CUSTOM_CREATURES.findIndex(function(c){return c.n===name;});
+  if(ci>=0){CUSTOM_CREATURES.splice(ci,1);saveCustomCreatures();}
+  renderBestiary();showToast('Reset to default');
+}
+
+function deleteCustomCreature(name){
+  CUSTOM_CREATURES=CUSTOM_CREATURES.filter(function(c){return c.n!==name;});
+  delete BESTIARY_OVERRIDES[name];saveCustomCreatures();saveBestiaryOverrides();renderBestiary();showToast('Deleted');
+}
+
+window.renderBestiary=renderBestiary;
+window.bSearch=bSearch;
+window.bFilterType=bFilterType;
+window.bFilterCr=bFilterCr;
+window.sendToCombat=sendToCombat;
+window.showAddCreatureForm=showAddCreatureForm;
+window.saveNewCreature=saveNewCreature;
+window.editCreature=editCreature;
+window.saveCreatureEdit=saveCreatureEdit;
+window.resetCreatureEdit=resetCreatureEdit;
+window.deleteCustomCreature=deleteCustomCreature;
+
+/* ── BESTIARY EXPORT / IMPORT ── */
+function exportBestiary(){
+  const data={_type:'dnd-bestiary',_version:1,_exported:new Date().toISOString(),
+    custom:CUSTOM_CREATURES,overrides:BESTIARY_OVERRIDES};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='bestiary_'+new Date().toISOString().slice(0,10)+'.dndbestiary.json';a.click();
+  showToast('Bestiary exported');
+}
+function importBestiary(){document.getElementById('import-bestiary-file').click();}
+function _handleBestiaryImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data._type!=='dnd-bestiary'){showToast('Not a bestiary file');return;}
+      var added=0,updated=0,edits=0;
+      if(Array.isArray(data.custom)){
+        data.custom.forEach(function(c){
+          const idx=CUSTOM_CREATURES.findIndex(function(x){return x.n===c.n;});
+          if(idx>=0){CUSTOM_CREATURES[idx]=c;updated++;}
+          else{CUSTOM_CREATURES.push(c);added++;}
+        });
+        saveCustomCreatures();
+      }
+      if(data.overrides&&typeof data.overrides==='object'){
+        Object.keys(data.overrides).forEach(function(k){
+          BESTIARY_OVERRIDES[k]=data.overrides[k];edits++;
+        });
+        saveBestiaryOverrides();
+      }
+      renderBestiary();
+      showToast(added+' added, '+updated+' updated, '+edits+' edits applied');
+    }catch(err){showToast('Import failed: '+err.message);}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+window.exportBestiary=exportBestiary;
+window.importBestiary=importBestiary;
+window._handleBestiaryImport=_handleBestiaryImport;
+
+/* ── GENERATOR RESULT INLINE EDIT ── */
+function _initGenEditing(){
+  document.querySelectorAll('#tab-generator .rm, #tab-generator .rs').forEach(function(el){
+    if(el.dataset.editInit) return;
+    el.dataset.editInit='1';
+    el.title='Double-click to edit';
+    el.addEventListener('dblclick',function(e){
+      if(el.dataset.locked==='1') return;
+      el.contentEditable='true';
+      el.style.outline='1px solid var(--acl)';
+      el.style.borderRadius='3px';
+      el.focus();
+      // select all
+      var range=document.createRange();
+      range.selectNodeContents(el);
+      var sel=window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    });
+    el.addEventListener('blur',function(){
+      el.contentEditable='false';
+      el.style.outline='';
+      el.style.borderRadius='';
+    });
+    el.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();el.blur();}
+      if(e.key==='Escape'){el.blur();}
+    });
+  });
+}
+window._initGenEditing=_initGenEditing;
+
+/* ── GENERATOR SUB-NAVIGATION ── */
+function swGen(cat){
+  document.querySelectorAll('.gen-cat').forEach(function(el){
+    el.style.display = el.id === 'gen-cat-'+cat ? '' : 'none';
+  });
+  document.querySelectorAll('.gen-subnav-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.genCat === cat);
+  });
+  try{ localStorage.setItem('dnd_gen_cat', cat); }catch(e){}
+  _injectLockButtons();
+  if(typeof _initGenEditing==='function') _initGenEditing();
+}
+function _loadGenCat(){
+  var saved;
+  try{ saved=localStorage.getItem('dnd_gen_cat'); }catch(e){}
+  swGen(saved||'pp');
+}
+window.swGen=swGen;
+
+/* ── PC HP BAR ── */
+function _pcHpPct(hpStr){
+  var parts=(hpStr||'').split('/');
+  var cur=parseFloat(parts[0])||0;
+  var max=parseFloat(parts[1])||cur;
+  if(!max||max<=0)return -1;  // -1 = no max known
+  return Math.min(1,Math.max(0,cur/max));
+}
+function _pcHpColor(pct){
+  if(pct>0.5)return'var(--grn)';
+  if(pct>0.25)return'var(--amb)';
+  return'var(--red)';
+}
+function _refreshPCHpBar(id){
+  var bar=document.getElementById('pc-hp-bar-'+id);
+  if(!bar)return;
+  var pc=PCS.find(function(p){return p.id===id;});
+  if(!pc)return;
+  var pct=_pcHpPct(pc.hp);
+  if(pct<0){bar.style.width='0%';bar.style.opacity='0';return;}
+  bar.style.width=(pct*100)+'%';
+  bar.style.background=_pcHpColor(pct);
+  bar.style.opacity='1';
+}
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
   function _init(){
@@ -8971,12 +9959,20 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderCampaignUI();
   renderSpellLookup();
   loadSession0();
+  loadBestiary();
+  renderBestiary();
   _loadDurations();
   renderCbtRound();
   document.querySelectorAll('.nav-tab[data-tab]').forEach(function(btn){
-    btn.addEventListener('click', function(){ sw(btn.dataset.tab); });
+    btn.addEventListener('click', function(){
+      sw(btn.dataset.tab);
+      if(btn.dataset.tab==='generator'||btn.dataset.tab==='combat'){_injectLockButtons();_initGenEditing();}
+    });
   });
+  _injectLockButtons();
+  _initGenEditing();
   sw('party');
+  _loadGenCat();
   }
   if(window.__TAURI__){document.addEventListener('tauri-storage-ready',_init,{once:true});}
   else{_init();}
@@ -9132,7 +10128,34 @@ function clearAndRoll(fn){_activeSp=null;fn();}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
+
+
 
 
 <button class="qnotes-fab" id="qnotes-fab" onclick="window.toggleQNotes()" title="Quick Notes">📝</button>
